@@ -9,6 +9,6 @@
 public class Student_CourseRegistration_Systeam {
 
     public static void main(String[] args) {
-        System.out.println("Dcu laihuy");
+        System.out.println("Dcu laihuy béo");
     }
 }
