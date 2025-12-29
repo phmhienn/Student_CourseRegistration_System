@@ -13,17 +13,10 @@ import java.sql.SQLException;
  * @author Dvtt
  */
 public class ConnectDB {
-   private static String url =
-            "jdbc:sqlserver://DIEPTUNG;" +
-            "instanceName=SQLEXPRESS;" +
-            "databaseName=QLTC;" +
-            "encrypt=false;" +
-            "trustServerCertificate=true;";
-
-    private static String user = "sa";
-    private static String pass = "123456";
-
-    public static Connection getConnection() throws SQLException {
+   public static Connection getConnection() throws Exception {
+        String url = "jdbc:mysql://localhost:3306/qltc?useSSL=false&serverTimezone=UTC";
+        String user = "root";      // đổi nếu cần
+        String pass = "123456";          // đổi nếu cần
         return DriverManager.getConnection(url, user, pass);
     }
 }
