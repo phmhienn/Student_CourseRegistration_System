@@ -7,7 +7,7 @@ package controller;
 import model.Session;
 import view.view_Dangnhap;
 import view.view_Sinhvien;
-import db.DBConnection;
+import model.ConnectDB;
 import java.awt.*;
 import javax.swing.*;
 import view.view_DSmonhoc;
@@ -38,7 +38,7 @@ public class controller_Sinhvien {
         view.btnDangXuat.addActionListener(e -> dangXuat());
     }
     private String getTenSinhVien(String maSV) {
-    try (var c = DBConnection.getConnection()) {
+    try (var c = ConnectDB.getConnection()) {
         String sql = "SELECT ho_ten FROM SinhVien WHERE ma_sv = ?";
         var ps = c.prepareStatement(sql);
         ps.setString(1, maSV);

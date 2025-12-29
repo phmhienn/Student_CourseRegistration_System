@@ -11,7 +11,7 @@ import view.view_Admin;
 import view.view_Dangnhap;
 import view.view_Giangvien;
 import view.view_Sinhvien;
-import db.DBConnection;
+import model.ConnectDB;
 
 /**
  *

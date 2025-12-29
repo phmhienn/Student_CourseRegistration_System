@@ -4,7 +4,7 @@
  */
 package controller;
 
-import db.DBConnection;
+import model.ConnectDB;
 import java.sql.*;
 import view.view_DSmonhoc;
 
@@ -25,7 +25,7 @@ public class controller_DSmonhoc {
 
     
     private void loadAllMonHoc() {
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
 
             String sql = """
                 SELECT ma_mon, ten_mon, so_tin_chi,
@@ -61,7 +61,7 @@ public class controller_DSmonhoc {
             return;
         }
 
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
 
             String sql = """
                 SELECT ma_mon, ten_mon, so_tin_chi,

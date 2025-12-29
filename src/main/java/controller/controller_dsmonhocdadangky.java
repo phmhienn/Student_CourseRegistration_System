@@ -5,7 +5,7 @@
 package controller;
 
 import view.view_dsmonhocdadangky;
-import db.DBConnection;
+import model.ConnectDB;
 import model.model_dsmonhocdadangky;
 import java.sql.*;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class controller_dsmonhocdadangky {
     private List<model_dsmonhocdadangky> getData(String maMon, String tenMon) {
         List<model_dsmonhocdadangky> list = new ArrayList<>();
 
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
             String sql = """
                 SELECT 
                       m.ma_mon, 

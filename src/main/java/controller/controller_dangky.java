@@ -1,6 +1,6 @@
 package controller;
 
-import db.DBConnection;
+import model.ConnectDB;
 import view.view_dangky;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class controller_dangky {
 
     
     private void loadHocKy() {
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
             ResultSet rs = c.createStatement()
                     .executeQuery("SELECT ma_hoc_ky FROM HocKy");
 
@@ -58,7 +58,7 @@ public class controller_dangky {
 
     
     private void loadLopHocPhan() {
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
             ResultSet rs = c.createStatement()
                     .executeQuery("SELECT ma_lhp FROM LopHocPhan");
 
@@ -80,7 +80,7 @@ public class controller_dangky {
         view.cbLichHoc.removeAllItems();
         mapLichHoc.clear();
 
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
             String sql = """
                 SELECT ma_tkb,CONCAT('Thứ ', thu,' | Tiết ', tiet_bat_dau, '-', (tiet_bat_dau + so_tiet - 1),' | Phòng ', phong_hoc) AS lich_hoc
                 FROM ThoiKhoaBieu
@@ -105,7 +105,7 @@ public class controller_dangky {
     }
     
     private boolean isTrungMonHoc(String maMon, String maHocKy) {
-    try (Connection c = DBConnection.getConnection()) {
+    try (Connection c = ConnectDB.getConnection()) {
 
         String sql = """
             SELECT COUNT(*)
@@ -155,7 +155,7 @@ public class controller_dangky {
     }
 
     private void autoFillMonHoc(String maMon) {
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
             String sql = "SELECT ten_mon, so_tin_chi FROM MonHoc WHERE ma_mon = ?";
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, maMon);
@@ -175,7 +175,7 @@ public class controller_dangky {
 
     
     private void timMon() {
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
 
             String sql = """
                 SELECT m.ma_mon, m.ten_mon, m.so_tin_chi,l.ma_lhp,
@@ -240,7 +240,7 @@ public class controller_dangky {
             return;
         }
 
-        try (Connection c = DBConnection.getConnection()) {
+        try (Connection c = ConnectDB.getConnection()) {
 
             String sql = """
                 INSERT INTO DangKyHocPhan(ma_sv, ma_lhp, ma_hoc_ky, ma_tkb, ngay_dang_ky, trang_thai) VALUES (?, ?, ?, ?, CURDATE(), 'Đăng ký')""";
@@ -287,7 +287,7 @@ public class controller_dangky {
     String maLHP = view.table.getValueAt(row, 3).toString();
     String maHocKy = view.table.getValueAt(row, 5).toString();
 
-    try (Connection c = DBConnection.getConnection()) {
+    try (Connection c = ConnectDB.getConnection()) {
 
         String sql = """
             DELETE FROM DangKyHocPhan
@@ -323,7 +323,7 @@ public class controller_dangky {
         view.model.setRowCount(0);
     }
     private void loadMonDaDangKy() {
-    try (Connection c = DBConnection.getConnection()) {
+    try (Connection c = ConnectDB.getConnection()) {
 
         String sql = """
             SELECT m.ma_mon, m.ten_mon, m.so_tin_chi,l.ma_lhp,
