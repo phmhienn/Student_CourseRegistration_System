@@ -5,8 +5,11 @@
 package controller;
 
 import model.Session;
+import view.view_BaoCaoDangKy;
 import view.view_Dangnhap;
 import view.view_Giangvien;
+import view.view_QLLopHocPhan;
+import view.view_QLSinhVien;
 
 /**
  *
@@ -20,10 +23,37 @@ public class controller_Giangvien {
         this.view = view;
         this.session = session;
 
-        view.lblInfo.setText("Tai khoan: " + session.getTenDangNhap()
-                + " | Vai tro: GV | Ma lien ket: " + session.getMaLienKet());
+        view.lblInfo.setText(
+                "Tài khoản: " + session.getTenDangNhap()
+                        + " | Vai trò: GIẢNG VIÊN"
+                        + " | Mã liên kết: " + session.getMaLienKet()
+        );
 
+        view.btnQLSinhVien.addActionListener(e -> moQLSinhVien());
+        view.btnQLLopHocPhan.addActionListener(e -> {
+            view_QLLopHocPhan lhp = new view_QLLopHocPhan();
+            new controller_QLLopHocPhan(lhp, view);
+
+            lhp.setVisible(true);
+            view.setVisible(false);
+        });
+        view.btnXemBaoCao.addActionListener(e -> moBaoCaoDangKy());
         view.btnDangXuat.addActionListener(e -> dangXuat());
+    }
+
+    private void moQLSinhVien() {
+        view_QLSinhVien man = new view_QLSinhVien();
+        man.setVisible(true);
+    }
+
+    private void moQLLopHocPhan() {
+        view_QLLopHocPhan man = new view_QLLopHocPhan();
+        man.setVisible(true);
+    }
+
+    private void moBaoCaoDangKy() {
+        view_BaoCaoDangKy man = new view_BaoCaoDangKy();
+        man.setVisible(true);
     }
 
     private void dangXuat() {

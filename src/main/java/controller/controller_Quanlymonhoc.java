@@ -41,6 +41,7 @@ public class controller_Quanlymonhoc {
         v.btnSua.addActionListener(e -> sua());
         v.btnXoa.addActionListener(e -> xoa());
         v.btnLamMoi.addActionListener(e -> lamMoi());
+        v.btnQuayLai.addActionListener(e -> v.dispose());
 
         v.btnTim.addActionListener(e -> tim());
         v.btnXuatExcel.addActionListener(e -> xuatExcel());
@@ -59,7 +60,7 @@ public class controller_Quanlymonhoc {
                 v.cboKhoa.addItem(new model_Khoa(rs.getString("ma_khoa"), rs.getString("ten_khoa")));
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi tai khoa: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi tải khoa: " + ex.getMessage());
         }
     }
 
@@ -83,7 +84,7 @@ public class controller_Quanlymonhoc {
                 });
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi tai mon hoc: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi tải môn học: " + ex.getMessage());
         }
     }
 
@@ -113,13 +114,13 @@ public class controller_Quanlymonhoc {
         model_Khoa khoa = (model_Khoa) v.cboKhoa.getSelectedItem();
 
         if (ma.isEmpty() || ten.isEmpty() || tcStr.isEmpty() || khoa == null) {
-            JOptionPane.showMessageDialog(v, "Nhap du thong tin mon hoc!");
+            JOptionPane.showMessageDialog(v, "Nhập đủ thông tin môn học!");
             return;
         }
 
         int tc;
         try { tc = Integer.parseInt(tcStr); }
-        catch (Exception ex) { JOptionPane.showMessageDialog(v, "Tin chi phai la so!"); return; }
+        catch (Exception ex) { JOptionPane.showMessageDialog(v, "Tín chỉ phải là số!"); return; }
 
         String sql = "INSERT INTO MonHoc(ma_mon, ten_mon, so_tin_chi, ma_khoa) VALUES(" +
                 "'" + ma + "', N'" + ten + "', " + tc + ", '" + khoa.getMaKhoa() + "')";
@@ -129,15 +130,15 @@ public class controller_Quanlymonhoc {
 
             st.executeUpdate(sql);
             taiDanhSachMonHoc(null);
-            JOptionPane.showMessageDialog(v, "Them thanh cong!");
+            JOptionPane.showMessageDialog(v, "Thêm thành công!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi them: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi thêm: " + ex.getMessage());
         }
     }
 
     private void sua() {
         String ma = v.txtMaMon.getText().trim();
-        if (ma.isEmpty()) { JOptionPane.showMessageDialog(v, "Chon mon can sua!"); return; }
+        if (ma.isEmpty()) { JOptionPane.showMessageDialog(v, "Chọn môn cần sửa!"); return; }
 
         String ten = v.txtTenMon.getText().trim();
         String tcStr = v.txtTinChi.getText().trim();
@@ -145,7 +146,7 @@ public class controller_Quanlymonhoc {
 
         int tc;
         try { tc = Integer.parseInt(tcStr); }
-        catch (Exception ex) { JOptionPane.showMessageDialog(v, "Tin chi phai la so!"); return; }
+        catch (Exception ex) { JOptionPane.showMessageDialog(v, "Tín chỉ phải là số!"); return; }
 
         String sql = "UPDATE MonHoc SET " +
                 "ten_mon=N'" + ten + "', " +
@@ -158,17 +159,17 @@ public class controller_Quanlymonhoc {
 
             st.executeUpdate(sql);
             taiDanhSachMonHoc(null);
-            JOptionPane.showMessageDialog(v, "Sua thanh cong!");
+            JOptionPane.showMessageDialog(v, "Sửa thành công!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi sua: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi sửa: " + ex.getMessage());
         }
     }
 
     private void xoa() {
         String ma = v.txtMaMon.getText().trim();
-        if (ma.isEmpty()) { JOptionPane.showMessageDialog(v, "Chon mon can xoa!"); return; }
+        if (ma.isEmpty()) { JOptionPane.showMessageDialog(v, "Chọn môn cần xoá!"); return; }
 
-        int opt = JOptionPane.showConfirmDialog(v, "Xoa mon " + ma + " ?", "Xac nhan", JOptionPane.YES_NO_OPTION);
+        int opt = JOptionPane.showConfirmDialog(v, "Xoá môn " + ma + " ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (opt != JOptionPane.YES_OPTION) return;
 
         String sql = "DELETE FROM MonHoc WHERE ma_mon='" + ma + "'";
@@ -179,9 +180,9 @@ public class controller_Quanlymonhoc {
             st.executeUpdate(sql);
             taiDanhSachMonHoc(null);
             lamMoi();
-            JOptionPane.showMessageDialog(v, "Xoa thanh cong!");
+            JOptionPane.showMessageDialog(v, "Xoá thành công!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi xoa: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi xoá: " + ex.getMessage());
         }
     }
 
@@ -213,12 +214,12 @@ public class controller_Quanlymonhoc {
     // ✅ Export Excel
     private void xuatExcel() {
     if (v.dtm.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(v, "Khong co du lieu de xuat!");
+        JOptionPane.showMessageDialog(v, "Không có dữ liệu đề xuất!");
         return;
     }
 
     JFileChooser fc = new JFileChooser();
-    fc.setDialogTitle("Chon noi luu file Excel");
+    fc.setDialogTitle("Chọnn nơi lưu file Excel");
     if (fc.showSaveDialog(v) != JFileChooser.APPROVE_OPTION) return;
 
     File f = fc.getSelectedFile();
@@ -230,10 +231,10 @@ public class controller_Quanlymonhoc {
 
         // Header
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("Ma mon");
-        header.createCell(1).setCellValue("Ten mon");
-        header.createCell(2).setCellValue("Tin chi");
-        header.createCell(3).setCellValue("Ma khoa");
+        header.createCell(0).setCellValue("Mã môn");
+        header.createCell(1).setCellValue("Tên môn");
+        header.createCell(2).setCellValue("Tín chỉ");
+        header.createCell(3).setCellValue("Mã khoa");
 
         int r = 1;
 
@@ -271,9 +272,9 @@ public class controller_Quanlymonhoc {
             wb.write(fos);
         }
 
-        JOptionPane.showMessageDialog(v, "Xuat thanh cong: " + path);
+        JOptionPane.showMessageDialog(v, "Xuất thành công: " + path);
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(v, "Loi xuat Excel: " + ex.getMessage());
+        JOptionPane.showMessageDialog(v, "Lỗi xuất Excel: " + ex.getMessage());
         }
     }
 
@@ -328,9 +329,9 @@ public class controller_Quanlymonhoc {
             }
 
             taiDanhSachMonHoc(null);
-            JOptionPane.showMessageDialog(v, "Nhap Excel xong! Dong xu ly: " + count);
+            JOptionPane.showMessageDialog(v, "Nhập Excel thành công");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi nhap Excel: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi nhập Excel: " + ex.getMessage());
         }
     }
 }

@@ -8,42 +8,35 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import model.model_Khoa;
 
-public class view_Quanlymonhoc extends JFrame {
+public class view_QLLopHocPhan extends JFrame {
 
+    public JTextField txtMaLHP = new JTextField();
     public JTextField txtMaMon = new JTextField();
     public JTextField txtTenMon = new JTextField();
-    public JTextField txtTinChi = new JTextField();
-    public JComboBox<model.model_Khoa> cboKhoa = new JComboBox<>();
+    public JTextField txtSoTinChi = new JTextField();
+    public JTextField txtMaGV = new JTextField();
+    public JTextField txtSoLuongToiDa = new JTextField();
+    public JTextField txtSoLuongDaDK = new JTextField();
 
-    public JTextField txtTim = new JTextField();
+    public JComboBox<String> cboHocKy = new JComboBox<>();
+    public JComboBox<String> cboTrangThai = new JComboBox<>();
 
-    public JButton btnThem = new JButton("Thêm");
-    public JButton btnSua = new JButton("Sửa");
-    public JButton btnXoa = new JButton("Xoá");
+    public JButton btnThem = new JButton("Thêm lớp");
+    public JButton btnSua = new JButton("Sửa lớp");
+    public JButton btnXoa = new JButton("Xoá lớp");
     public JButton btnLamMoi = new JButton("Làm mới");
-
-    public JButton btnTim = new JButton("Tìm kiếm");
-    public JButton btnXuatExcel = new JButton("Xuất Excel");
-    public JButton btnNhapExcel = new JButton("Nhập Excel");
-
-    // ✅ nút quay lại góc phải
     public JButton btnQuayLai = new JButton("Quay lại");
 
-    public DefaultTableModel dtm = new DefaultTableModel(
-            new String[]{"Mã môn", "Tên môn", "Tín chỉ", "Mã khoa"}, 0
-    ) {
-        @Override public boolean isCellEditable(int row, int column) { return false; }
-    };
-    public JTable tbl = new JTable(dtm);
+    public JTable tblLopHocPhan;
+    public DefaultTableModel tableModel;
 
-    public view_Quanlymonhoc() {
-        setTitle("Quản lý môn học");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1050, 650);
-        setMinimumSize(new Dimension(980, 560));
+    public view_QLLopHocPhan() {
+        setTitle("Quản lý lớp học phần");
+        setSize(1180, 650);
+        setMinimumSize(new Dimension(1060, 600));
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}
@@ -52,124 +45,110 @@ public class view_Quanlymonhoc extends JFrame {
         Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
 
-        // ===== ROOT =====
         JPanel root = new JPanel(new BorderLayout(12, 12));
         root.setBorder(new EmptyBorder(12, 12, 12, 12));
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
-        // ===== TOP BAR (title + quay lai) =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
 
-        JLabel lblTitle = new JLabel("Quản lý môn học", SwingConstants.CENTER);
+        JLabel lblTitle = new JLabel("Quản lý lớp học phần", SwingConstants.CENTER);
         lblTitle.setFont(fTitle);
 
-        JPanel rightTop = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        rightTop.setOpaque(false);
-
+        JPanel topRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        topRight.setOpaque(false);
         styleNeutral(btnQuayLai);
-        rightTop.add(btnQuayLai);
+        topRight.add(btnQuayLai);
 
         topBar.add(lblTitle, BorderLayout.CENTER);
-        topBar.add(rightTop, BorderLayout.EAST);
+        topBar.add(topRight, BorderLayout.EAST);
 
-        // ===== INPUT WRAP =====
-        JPanel inputWrap = new JPanel();
+        JPanel inputWrap = new JPanel(new BorderLayout(12, 12));
         inputWrap.setBackground(Color.WHITE);
-        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin môn học"));
-        inputWrap.setLayout(new BoxLayout(inputWrap, BoxLayout.Y_AXIS));
+        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin lớp học phần"));
 
-        // --- ROW 1: 4 ô cùng 1 hàng ---
-        JPanel row1 = new JPanel(new GridLayout(1, 4, 18, 0));
-        row1.setOpaque(false);
-        row1.setBorder(new EmptyBorder(10, 16, 6, 16));
+        JPanel form = new JPanel(new GridLayout(2, 4, 14, 10));
+        form.setOpaque(false);
+        form.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        row1.add(fieldBox("Mã môn", txtMaMon, fLabel, fInput));
-        row1.add(fieldBox("Tên môn", txtTenMon, fLabel, fInput));
-        row1.add(fieldBox("Tín chỉ", txtTinChi, fLabel, fInput));
-        row1.add(comboBox("Khoa", cboKhoa, fLabel, fInput));
+        form.add(fieldBox("Mã LHP", txtMaLHP, fLabel, fInput));
+        form.add(fieldBox("Mã môn", txtMaMon, fLabel, fInput));
+        form.add(fieldBox("Tên môn", txtTenMon, fLabel, fInput));
+        form.add(fieldBox("Số tín chỉ", txtSoTinChi, fLabel, fInput));
 
-        // --- ROW 2: CRUD + search + excel ---
-        JPanel row2 = new JPanel(new BorderLayout());
-        row2.setOpaque(false);
-        row2.setBorder(new EmptyBorder(8, 16, 12, 16));
+        form.add(fieldBox("Mã giảng viên", txtMaGV, fLabel, fInput));
+        form.add(comboBox("Học kỳ", cboHocKy, fLabel, fInput));
+        form.add(fieldBox("SL tối đa", txtSoLuongToiDa, fLabel, fInput));
+        form.add(comboBox("Trạng thái", cboTrangThai, fLabel, fInput));
 
-        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        left.setOpaque(false);
+        JPanel actionBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        actionBar.setOpaque(false);
+        actionBar.setBorder(new EmptyBorder(0, 14, 10, 14));
 
         stylePrimary(btnThem);
         stylePrimary(btnSua);
         styleDanger(btnXoa);
         styleNeutral(btnLamMoi);
-        stylePrimary(btnTim);
 
-        JLabel lblKey = new JLabel("Từ khoá");
-        lblKey.setFont(fLabel);
+        actionBar.add(btnThem);
+        actionBar.add(btnSua);
+        actionBar.add(btnXoa);
+        actionBar.add(btnLamMoi);
 
-        txtTim.setFont(fInput);
-        txtTim.setPreferredSize(new Dimension(200, 36));
-        txtTim.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                new EmptyBorder(6, 8, 6, 8)
-        ));
+        inputWrap.add(form, BorderLayout.CENTER);
+        inputWrap.add(actionBar, BorderLayout.SOUTH);
 
-        left.add(btnThem);
-        left.add(btnSua);
-        left.add(btnXoa);
-        left.add(btnLamMoi);
-        left.add(Box.createHorizontalStrut(16));
-        left.add(lblKey);
-        left.add(txtTim);
-        left.add(btnTim);
-
-        JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        right.setOpaque(false);
-
-        stylePrimary(btnXuatExcel);
-        styleNeutral(btnNhapExcel);
-
-        right.add(btnXuatExcel);
-        right.add(btnNhapExcel);
-
-        row2.add(left, BorderLayout.WEST);
-        row2.add(right, BorderLayout.EAST);
-
-        inputWrap.add(row1);
-        inputWrap.add(row2);
-
-        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
-        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách môn học"));
+        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách lớp học phần"));
 
-        tbl.setRowHeight(30);
-        tbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tbl.setGridColor(new Color(230, 230, 230));
-        tbl.setShowGrid(true);
-        tbl.setSelectionBackground(new Color(210, 225, 245));
-        tbl.setSelectionForeground(Color.BLACK);
+        String[] cols = {
+                "Mã LHP", "Mã môn", "Tên môn", "Số TC",
+                "Mã GV", "Học kỳ", "SL tối đa", "Đã ĐK", "Trạng thái"
+        };
 
-        JTableHeader header = tbl.getTableHeader();
+        tableModel = new DefaultTableModel(cols, 0) {
+            @Override public boolean isCellEditable(int r, int c) { return false; }
+        };
+
+        tblLopHocPhan = new JTable(tableModel);
+
+        tblLopHocPhan.setRowHeight(30);
+        tblLopHocPhan.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tblLopHocPhan.setGridColor(new Color(230, 230, 230));
+        tblLopHocPhan.setShowGrid(true);
+        tblLopHocPhan.setSelectionBackground(new Color(210, 225, 245));
+        tblLopHocPhan.setSelectionForeground(Color.BLACK);
+
+        JTableHeader header = tblLopHocPhan.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 34));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-        tbl.getColumnModel().getColumn(2).setCellRenderer(center);
-        tbl.getColumnModel().getColumn(3).setCellRenderer(center);
+        tblLopHocPhan.getColumnModel().getColumn(3).setCellRenderer(center); // so tc
+        tblLopHocPhan.getColumnModel().getColumn(5).setCellRenderer(center); // hoc ky
+        tblLopHocPhan.getColumnModel().getColumn(6).setCellRenderer(center); // sl toi da
+        tblLopHocPhan.getColumnModel().getColumn(7).setCellRenderer(center); // da dk
+        tblLopHocPhan.getColumnModel().getColumn(8).setCellRenderer(center); // trang thai
 
-        tbl.getColumnModel().getColumn(0).setPreferredWidth(150);
-        tbl.getColumnModel().getColumn(1).setPreferredWidth(520);
-        tbl.getColumnModel().getColumn(2).setPreferredWidth(140);
-        tbl.getColumnModel().getColumn(3).setPreferredWidth(160);
+        tblLopHocPhan.getColumnModel().getColumn(0).setPreferredWidth(120);
+        tblLopHocPhan.getColumnModel().getColumn(1).setPreferredWidth(110);
+        tblLopHocPhan.getColumnModel().getColumn(2).setPreferredWidth(340);
+        tblLopHocPhan.getColumnModel().getColumn(3).setPreferredWidth(80);
+        tblLopHocPhan.getColumnModel().getColumn(4).setPreferredWidth(110);
+        tblLopHocPhan.getColumnModel().getColumn(5).setPreferredWidth(110);
+        tblLopHocPhan.getColumnModel().getColumn(6).setPreferredWidth(110);
+        tblLopHocPhan.getColumnModel().getColumn(7).setPreferredWidth(90);
+        tblLopHocPhan.getColumnModel().getColumn(8).setPreferredWidth(140);
 
-        JScrollPane sp = new JScrollPane(tbl);
-        sp.setBorder(new EmptyBorder(10, 10, 10, 10));
-        sp.getViewport().setBackground(Color.WHITE);
+        JScrollPane scroll = new JScrollPane(tblLopHocPhan);
+        scroll.setBorder(new EmptyBorder(10, 10, 10, 10));
+        scroll.getViewport().setBackground(Color.WHITE);
 
-        tableWrap.add(sp, BorderLayout.CENTER);
+        tableWrap.add(scroll, BorderLayout.CENTER);
 
         JPanel centerWrap = new JPanel();
         centerWrap.setLayout(new BoxLayout(centerWrap, BoxLayout.Y_AXIS));

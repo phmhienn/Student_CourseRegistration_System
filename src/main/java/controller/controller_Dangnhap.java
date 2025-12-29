@@ -32,18 +32,17 @@ public class controller_Dangnhap {
         String p = new String(view.txtPass.getPassword()).trim();
 
         if (u.isEmpty() || p.isEmpty()) {
-            view.lblMsg.setText("Nhap du thong tin!");
+            view.lblMsg.setText("Nhập đủ thông tin!");
             return;
         }
 
         try {
             Session s = model.dangNhap(u, p);
             if (s == null) {
-                view.lblMsg.setText("Sai tai khoan hoac mat khau!");
+                view.lblMsg.setText("Sai tài khoản hoặc mật khẩu!");
                 return;
             }
 
-            // PHAN QUYEN
             if ("SV".equalsIgnoreCase(s.getVaiTro())) {
                 view_Sinhvien f = new view_Sinhvien();
                 new controller_Sinhvien(f, s);
@@ -60,7 +59,7 @@ public class controller_Dangnhap {
 
             view.dispose();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(view, "Loi: " + ex.getMessage());
+            JOptionPane.showMessageDialog(view, "Lỗi: " + ex.getMessage());
         }
     }
 }

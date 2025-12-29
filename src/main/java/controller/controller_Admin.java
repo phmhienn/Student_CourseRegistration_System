@@ -31,10 +31,8 @@ public class controller_Admin {
     public controller_Admin(view_Admin v) {
         this.v = v;
 
-        // ✅ auto load table khi mở form (không cần nút tải)
         taiDanhSachTaiKhoan();
 
-        // ✅ click 1 dòng -> đổ lên ô
         v.tbl.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -68,7 +66,7 @@ public class controller_Admin {
                 });
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi tai danh sach: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi tải danh sách: " + ex.getMessage());
         }
     }
 
@@ -91,13 +89,12 @@ public class controller_Admin {
         String lk = v.txtMaLienKet.getText().trim();
 
         if (u.isEmpty() || p.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Nhap ten dang nhap va mat khau!");
+            JOptionPane.showMessageDialog(v, "Nhập tên đăng nhập và mật khẩu!");
             return;
         }
 
-        // AD có thể để ma_lien_ket null
         if (!r.equals("AD") && lk.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Vai tro SV/GV phai co ma lien ket!");
+            JOptionPane.showMessageDialog(v, "Vai trò SV/GV phải có mã liên kết!");
             return;
         }
 
@@ -109,9 +106,9 @@ public class controller_Admin {
 
             st.executeUpdate(sql);
             taiDanhSachTaiKhoan();
-            JOptionPane.showMessageDialog(v, "Them thanh cong!");
+            JOptionPane.showMessageDialog(v, "Thêm thành công!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi them: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi thêm: " + ex.getMessage());
         }
     }
 
@@ -122,17 +119,17 @@ public class controller_Admin {
         String lk = v.txtMaLienKet.getText().trim();
 
         if (u.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Chon tai khoan can sua!");
+            JOptionPane.showMessageDialog(v, "Chọn tài khoản cần sửa!");
             return;
         }
 
         if (p.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Mat khau khong duoc rong!");
+            JOptionPane.showMessageDialog(v, "Mật khẩu không được rỗng!");
             return;
         }
 
         if (!r.equals("AD") && lk.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Vai tro SV/GV phai co ma lien ket!");
+            JOptionPane.showMessageDialog(v, "Vai trò SV/GV phải có mã liên kết!");
             return;
         }
 
@@ -147,20 +144,20 @@ public class controller_Admin {
 
             st.executeUpdate(sql);
             taiDanhSachTaiKhoan();
-            JOptionPane.showMessageDialog(v, "Sua thanh cong!");
+            JOptionPane.showMessageDialog(v, "Sảa thành công!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi sua: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi sửa: " + ex.getMessage());
         }
     }
 
     private void xoa() {
         String u = v.txtTenDangNhap.getText().trim();
         if (u.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Chon tai khoan can xoa!");
+            JOptionPane.showMessageDialog(v, "Chọn tài khoản cần xoá!");
             return;
         }
 
-        int opt = JOptionPane.showConfirmDialog(v, "Xoa tai khoan " + u + " ?", "Xac nhan", JOptionPane.YES_NO_OPTION);
+        int opt = JOptionPane.showConfirmDialog(v, "Xoá tài khoản " + u + " ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (opt != JOptionPane.YES_OPTION) return;
 
         String sql = "DELETE FROM TaiKhoan WHERE ten_dang_nhap='" + u + "'";
@@ -171,9 +168,9 @@ public class controller_Admin {
             st.executeUpdate(sql);
             taiDanhSachTaiKhoan();
             lamMoi();
-            JOptionPane.showMessageDialog(v, "Xoa thanh cong!");
+            JOptionPane.showMessageDialog(v, "Xoá thành công!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(v, "Loi xoa: " + ex.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi xoá: " + ex.getMessage());
         }
     }
 
