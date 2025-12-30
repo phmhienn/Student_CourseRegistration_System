@@ -11,6 +11,7 @@ import model.ConnectDB;
 import java.awt.*;
 import javax.swing.*;
 import view.view_DSmonhoc;
+import view.view_ThoiKhoaBieu;
 import view.view_dangky;
 import view.view_dsmonhocdadangky;
 
@@ -26,20 +27,16 @@ public class controller_Sinhvien {
         this.view = view;
         this.session = session;
 
-        view.lblInfo.setText("Tai khoan: " + session.getTenDangNhap()
-            + " | Vai tro: " + session.getVaiTro()
-            + " | Ma lien ket: " + session.getMaLienKet());
-        
         String maSV = session.getMaLienKet();
         String tenSV = getTenSinhVien(maSV);
-
-        view.lblInfo.setText(tenSV);
 
         view.btnThongTin.addActionListener(e -> moThongTinSinhVien());
         view.btnDangKy.addActionListener(e -> moDangKyMonHoc());
         view.btnDaDangKy.addActionListener(e -> moMonHocDaDangKy());
         view.btnDsMonHoc.addActionListener(e -> moDanhSachMonHoc());
         view.btnDangXuat.addActionListener(e -> dangXuat());
+        view.btnThoiKhoaBieu.addActionListener(e -> moThoiKhoaBieu());
+
     }
     private String getTenSinhVien(String maSV) {
     try (var c = ConnectDB.getConnection()) {
@@ -57,7 +54,9 @@ public class controller_Sinhvien {
 }
     
     private void moDangKyMonHoc() {
-        loadView(new view_dangky());
+        view_dangky pnl = new view_dangky();
+        new controller_dangky(pnl, session); 
+        loadView(pnl);
     }
     private void loadView(JPanel panel) {
         view.panelContent.removeAll();
@@ -71,13 +70,24 @@ public class controller_Sinhvien {
     }
     
     private void moMonHocDaDangKy() {
-        loadView(new view_dsmonhocdadangky());
+        view_dsmonhocdadangky pnl = new view_dsmonhocdadangky();
+        new controller_dsmonhocdadangky(pnl, session); 
+        loadView(pnl);
     }
     
     private void moDanhSachMonHoc() {
-    loadView(new view_DSmonhoc());
-}
+    view_DSmonhoc pnl = new view_DSmonhoc();
+        new controller_DSmonhoc(pnl,session); 
+        loadView(pnl);
+    }
     
+    private void moThoiKhoaBieu() {
+    view_ThoiKhoaBieu pnl = new view_ThoiKhoaBieu();
+        new controller_ThoiKhoaBieu(pnl, session);
+        loadView(pnl);
+    }
+
+
     
 
     private void dangXuat() {

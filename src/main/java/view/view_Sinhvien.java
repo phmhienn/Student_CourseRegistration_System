@@ -9,12 +9,11 @@ import javax.swing.border.EmptyBorder;
 
 public class view_Sinhvien extends JFrame {
 
-    public JLabel lblInfo = new JLabel("", SwingConstants.RIGHT);
-
     public JButton btnThongTin = new JButton("Thông tin sinh viên");
     public JButton btnDangKy = new JButton("Đăng ký môn học");
     public JButton btnDaDangKy = new JButton("Môn học đã đăng ký");
     public JButton btnDsMonHoc = new JButton("Danh sách môn học");
+    public JButton btnThoiKhoaBieu = new JButton("Thời khoá biểu");
     public JButton btnDangXuat = new JButton("Đăng xuất");
 
     public JPanel panelContent = new JPanel(new BorderLayout());
@@ -29,7 +28,6 @@ public class view_Sinhvien extends JFrame {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}
 
-        Font fTitle = new Font("Segoe UI", Font.BOLD, 18);
         Font fLabel = new Font("Segoe UI", Font.BOLD, 13);
         Font fBtn = new Font("Segoe UI", Font.BOLD, 13);
 
@@ -40,16 +38,11 @@ public class view_Sinhvien extends JFrame {
 
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
-        topBar.setBorder(new EmptyBorder(12, 14, 12, 14));
+        topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
 
         JLabel lblTitle = new JLabel("Trang sinh viên");
-        lblTitle.setFont(fTitle);
-
-        lblInfo.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        lblInfo.setForeground(new Color(60, 60, 60));
-
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         topBar.add(lblTitle, BorderLayout.WEST);
-        topBar.add(lblInfo, BorderLayout.EAST);
 
         JPanel menuWrap = new JPanel();
         menuWrap.setBackground(Color.WHITE);
@@ -71,6 +64,7 @@ public class view_Sinhvien extends JFrame {
         styleMenuButton(btnDangKy, fBtn, btnSize);
         styleMenuButton(btnDaDangKy, fBtn, btnSize);
         styleMenuButton(btnDsMonHoc, fBtn, btnSize);
+        styleMenuButton(btnThoiKhoaBieu, fBtn, btnSize);
 
         menuBtns.add(btnThongTin);
         menuBtns.add(Box.createVerticalStrut(10));
@@ -79,6 +73,8 @@ public class view_Sinhvien extends JFrame {
         menuBtns.add(btnDaDangKy);
         menuBtns.add(Box.createVerticalStrut(10));
         menuBtns.add(btnDsMonHoc);
+        menuBtns.add(Box.createVerticalStrut(10));
+        menuBtns.add(btnThoiKhoaBieu);
         menuBtns.add(Box.createVerticalGlue());
 
         styleDanger(btnDangXuat);
@@ -88,11 +84,6 @@ public class view_Sinhvien extends JFrame {
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         bottom.setOpaque(false);
         bottom.add(btnDangXuat);
-
-        JPanel menuTop = new JPanel(new BorderLayout());
-        menuTop.setOpaque(false);
-        menuTop.add(lblMenu, BorderLayout.NORTH);
-        menuTop.add(Box.createVerticalStrut(10), BorderLayout.CENTER);
 
         menuWrap.add(lblMenu, BorderLayout.NORTH);
         menuWrap.add(menuBtns, BorderLayout.CENTER);

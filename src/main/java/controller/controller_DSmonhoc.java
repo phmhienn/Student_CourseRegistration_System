@@ -3,18 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
+
 import model.ConnectDB;
 import java.sql.*;
+import model.Session;
 import view.view_DSmonhoc;
+
 /**
  *
- * @author Dvtt
+ * @author thedu
  */
 public class controller_DSmonhoc {
     view_DSmonhoc view;
-
-    public controller_DSmonhoc(view_DSmonhoc view) {
+    Session session ;
+    public controller_DSmonhoc(view_DSmonhoc view,Session session) {
         this.view = view;
+        this.session=session;
 
         loadAllMonHoc();
 
@@ -93,4 +97,5 @@ public class controller_DSmonhoc {
             e.printStackTrace();
         }
     }
+
 }

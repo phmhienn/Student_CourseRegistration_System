@@ -1,5 +1,6 @@
 package view;
 
+import controller.controller_QLLopHocPhan;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -160,6 +161,26 @@ public class view_QLLopHocPhan extends JFrame {
 
         root.add(topBar, BorderLayout.NORTH);
         root.add(centerWrap, BorderLayout.CENTER);
+        
+        new controller_QLLopHocPhan(this);
+        tblLopHocPhan.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && tblLopHocPhan.getSelectedRow() != -1) {
+
+                int r = tblLopHocPhan.getSelectedRow();
+
+                txtMaLHP.setText(tableModel.getValueAt(r, 0).toString());
+                txtMaMon.setText(tableModel.getValueAt(r, 1).toString());
+                txtTenMon.setText(tableModel.getValueAt(r, 2).toString());
+                txtSoTinChi.setText(tableModel.getValueAt(r, 3).toString());
+                txtMaGV.setText(tableModel.getValueAt(r, 4).toString());
+                cboHocKy.setSelectedItem(tableModel.getValueAt(r, 5).toString());
+                txtSoLuongToiDa.setText(tableModel.getValueAt(r, 6).toString());
+                txtSoLuongDaDK.setText(tableModel.getValueAt(r, 7).toString());
+                cboTrangThai.setSelectedItem(tableModel.getValueAt(r, 8).toString());
+
+                txtMaLHP.setEditable(false);
+            }
+        });
     }
 
     private JPanel fieldBox(String label, JTextField field, Font fLabel, Font fInput) {
@@ -215,7 +236,7 @@ public class view_QLLopHocPhan extends JFrame {
     private void styleNeutral(JButton b) {
         styleButton(b, new Color(235, 235, 235), new Color(40, 40, 40), new Color(220, 220, 220));
     }
-
+    
     private void styleButton(JButton b, Color bg, Color fg, Color hover) {
         b.setFocusPainted(false);
         b.setBorderPainted(false);
@@ -232,4 +253,6 @@ public class view_QLLopHocPhan extends JFrame {
             @Override public void mouseExited(MouseEvent e) { b.setBackground(normal); }
         });
     }
+    
+    
 }

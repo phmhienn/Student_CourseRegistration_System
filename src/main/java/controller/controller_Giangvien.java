@@ -30,13 +30,7 @@ public class controller_Giangvien {
         );
 
         view.btnQLSinhVien.addActionListener(e -> moQLSinhVien());
-        view.btnQLLopHocPhan.addActionListener(e -> {
-            view_QLLopHocPhan lhp = new view_QLLopHocPhan();
-            new controller_QLLopHocPhan(lhp, view);
-
-            lhp.setVisible(true);
-            view.setVisible(false);
-        });
+        view.btnQLLopHocPhan.addActionListener(e -> moQLLopHocPhan());
         view.btnXemBaoCao.addActionListener(e -> moBaoCaoDangKy());
         view.btnDangXuat.addActionListener(e -> dangXuat());
     }

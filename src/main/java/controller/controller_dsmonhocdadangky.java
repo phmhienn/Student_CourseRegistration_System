@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
+
 import view.view_dsmonhocdadangky;
 import model.ConnectDB;
 import model.model_dsmonhocdadangky;
@@ -12,13 +13,13 @@ import java.util.List;
 import model.Session;
 /**
  *
- * @author Dvtt
+ * @author thedu
  */
 public class controller_dsmonhocdadangky {
     view_dsmonhocdadangky view;
     private Session session;
 
-    public controller_dsmonhocdadangky(view_dsmonhocdadangky view) {
+    public controller_dsmonhocdadangky(view_dsmonhocdadangky view,Session session) {
         this.view = view;
         this.session = session;
         loadAll();
@@ -87,7 +88,7 @@ public class controller_dsmonhocdadangky {
                     rs.getInt("so_tin_chi"),
                     rs.getString("ma_lhp"),
                     rs.getString("lich_hoc"),
-                    rs.getString("ma_hoc_ky"),
+rs.getString("ma_hoc_ky"),
                     rs.getDate("ngay_bat_dau"),
                     rs.getDate("ngay_ket_thuc")
                 ));

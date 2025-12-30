@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller;
 
-/**
- *
- * @author Dvtt
- */
 import model.ConnectDB;
 import view.view_dangky;
 
@@ -27,7 +19,7 @@ public class controller_dangky {
     
     private final Map<String, Integer> mapLichHoc = new HashMap<>();
 
-    public controller_dangky(view_dangky view) {
+    public controller_dangky(view_dangky view,Session session) {
         this.view = view;
         this.session = session;
         
@@ -81,36 +73,44 @@ public class controller_dangky {
 
     
     private void loadLichHocTheoLop() {
-        if (view.cbLop.getSelectedItem() == null) return;
+    Object sel = view.cbLop.getSelectedItem();
+    if (sel == null) return;
 
-        String maLHP = view.cbLop.getSelectedItem().toString();
+    String maLHP = sel.toString().trim();
 
-        view.cbLichHoc.removeAllItems();
-        mapLichHoc.clear();
+    view.cbLichHoc.removeAllItems();
+    mapLichHoc.clear();
 
-        try (Connection c = ConnectDB.getConnection()) {
-            String sql = """
-                SELECT ma_tkb,CONCAT('Thứ ', thu,' | Tiết ', tiet_bat_dau, '-', (tiet_bat_dau + so_tiet - 1),' | Phòng ', phong_hoc) AS lich_hoc
-                FROM ThoiKhoaBieu
-                WHERE ma_lhp = ?
-                ORDER BY thu, tiet_bat_dau
-                """;
+    try (Connection c = ConnectDB.getConnection()) {
+        String sql = """
+            SELECT ma_tkb,
+                   CONCAT(N'Thứ ', thu, N' | Tiết ', tiet_bat_dau, N'-', (tiet_bat_dau + so_tiet - 1),
+                          N' | Phòng ', phong_hoc) AS lich_hoc
+            FROM ThoiKhoaBieu
+            WHERE ma_lhp = ?
+            ORDER BY thu, tiet_bat_dau
+        """;
 
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setString(1, maLHP);
-            ResultSet rs = ps.executeQuery();
+        PreparedStatement ps = c.prepareStatement(sql);
+        ps.setString(1, maLHP);
 
-            while (rs.next()) {
-                int maTKB = rs.getInt("ma_tkb");
-                String hienThi = rs.getString("lich_hoc");
-                mapLichHoc.put(hienThi, maTKB);
-                view.cbLichHoc.addItem(hienThi);
-            }
+        ResultSet rs = ps.executeQuery();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (rs.next()) {
+            int maTKB = rs.getInt("ma_tkb");
+            String hienThi = rs.getString("lich_hoc");
+            mapLichHoc.put(hienThi, maTKB);
+            view.cbLichHoc.addItem(hienThi);
         }
+
+        if (view.cbLichHoc.getItemCount() == 0) {
+            System.out.println("Không có TKB cho ma_lhp = " + maLHP);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
     
     private boolean isTrungMonHoc(String maMon, String maHocKy) {
     try (Connection c = ConnectDB.getConnection()) {
@@ -199,8 +199,7 @@ public class controller_dangky {
             ps.setString(1, view.txtMaMon.getText().trim());
 
             ResultSet rs = ps.executeQuery();
-
-            view.model.setRowCount(0);
+view.model.setRowCount(0);
             while (rs.next()) {
                 view.model.addRow(new Object[]{
                     rs.getString("ma_mon"),
@@ -279,7 +278,7 @@ public class controller_dangky {
 
     int row = view.table.getSelectedRow();
     if (row == -1) {
-        JOptionPane.showMessageDialog(view, "Vui lòng chọn môn cần hủy!");
+JOptionPane.showMessageDialog(view, "Vui lòng chọn môn cần hủy!");
         return;
     }
 
@@ -369,4 +368,3 @@ public class controller_dangky {
 }
   
 }
-
