@@ -1,8 +1,3 @@
-
-import controller.controller_Dangnhap;
-import javax.swing.SwingUtilities;
-import view.view_Dangnhap;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
@@ -11,6 +6,9 @@ import view.view_Dangnhap;
  *
  * @author Penguin
  */
+import controller.controller_Dangnhap;
+import javax.swing.SwingUtilities;
+import view.view_Dangnhap;
 public class Student_CourseRegistration_Systeam {
 
     public static void main(String[] args) {

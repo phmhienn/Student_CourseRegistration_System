@@ -253,6 +253,6 @@ public class view_QLLopHocPhan extends JFrame {
             @Override public void mouseExited(MouseEvent e) { b.setBackground(normal); }
         });
     }
-    
-    
 }
+    
+

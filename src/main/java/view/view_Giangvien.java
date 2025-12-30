@@ -6,10 +6,21 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class view_Giangvien extends JFrame {
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+/**
+ *
+ * @author Dvtt
+ */
+public class view_Giangvien extends JFrame{
+    public JLabel lblInfo = new JLabel("Xin chào Giảng viên", SwingConstants.CENTER);
 
-    public JLabel lblInfo = new JLabel("Xin chào Giảng viên", SwingConstants.LEFT);
-
+    // ====== Buttons ======
     public JButton btnQLSinhVien = new JButton("Quản lý sinh viên");
     public JButton btnQLLopHocPhan = new JButton("Quản lý lớp học phần");
     public JButton btnXemBaoCao = new JButton("Xem báo cáo đăng ký");
@@ -17,12 +28,9 @@ public class view_Giangvien extends JFrame {
     public JButton btnDangXuat = new JButton("Đăng xuất");
 
     public view_Giangvien() {
-        setTitle("Trang Giảng viên");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(820, 520);
-        setMinimumSize(new Dimension(760, 480));
+        setTitle("Trang Giảng Viên");
+        setSize(500, 300);
         setLocationRelativeTo(null);
-
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}
 

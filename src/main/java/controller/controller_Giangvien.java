@@ -5,12 +5,12 @@
 package controller;
 
 import model.Session;
-import view.view_BaoCaoDangKy;
 import view.view_Dangnhap;
 import view.view_Giangvien;
-import view.view_QLLopHocPhan;
+// import các view con (sẽ tạo sau)
 import view.view_QLSinhVien;
-
+import view.view_QLLopHocPhan;
+import view.view_BaoCaoDangKy;
 /**
  *
  * @author Dvtt
@@ -23,17 +23,21 @@ public class controller_Giangvien {
         this.view = view;
         this.session = session;
 
+        // ====== Hiển thị thông tin đăng nhập ======
         view.lblInfo.setText(
                 "Tài khoản: " + session.getTenDangNhap()
                         + " | Vai trò: GIẢNG VIÊN"
                         + " | Mã liên kết: " + session.getMaLienKet()
         );
 
+        // ====== Gán sự kiện ======
         view.btnQLSinhVien.addActionListener(e -> moQLSinhVien());
         view.btnQLLopHocPhan.addActionListener(e -> moQLLopHocPhan());
         view.btnXemBaoCao.addActionListener(e -> moBaoCaoDangKy());
         view.btnDangXuat.addActionListener(e -> dangXuat());
     }
+
+    // ================== CÁC CHỨC NĂNG ==================
 
     private void moQLSinhVien() {
         view_QLSinhVien man = new view_QLSinhVien();

@@ -14,8 +14,7 @@ import java.sql.SQLException;
  */
 public class ConnectDB {
    private static String url =
-            "jdbc:sqlserver://DIEPTUNG;" +
-            "instanceName=SQLEXPRESS;" +
+            "jdbc:sqlserver://PHAMHIEN;" +
             "databaseName=QLTC;" +
             "encrypt=false;" +
             "trustServerCertificate=true;";
