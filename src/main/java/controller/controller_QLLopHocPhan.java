@@ -11,6 +11,8 @@ public class controller_QLLopHocPhan {
 
     public controller_QLLopHocPhan(view_QLLopHocPhan view) {
         this.view = view;
+        
+        view.btnQuayLai.addActionListener(e -> view.dispose());
         view.btnThem.addActionListener(e -> themLopHocPhan());
         view.btnSua.addActionListener(e -> suaLopHocPhan());
         view.btnXoa.addActionListener(e -> xoaLopHocPhan());
@@ -88,7 +90,7 @@ public class controller_QLLopHocPhan {
                         rs.getInt("so_tin_chi"),              // Số TC
                         rs.getString("ma_gv"),                // Mã GV
                         rs.getString("ma_hoc_ky"),            // Học kỳ
-rs.getInt("so_luong_toi_da"),          // SL tối đa
+                        rs.getInt("so_luong_toi_da"),          // SL tối đa
                         rs.getInt("so_luong_da_dang_ky"),      // Đã ĐK
                         rs.getString("trang_thai")             // Trạng thái
                 };
