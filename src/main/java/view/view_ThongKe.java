@@ -1,4 +1,3 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -7,12 +6,11 @@ package view;
 
 /**
  *
- * @author Dvtt
+ * @author HUY
  */
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -20,37 +18,29 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-public class view_QLSinhVien extends JFrame {
+public class view_ThongKe extends JFrame {
 
-    public JTextField txtMaSV = new JTextField();
-    public JTextField txtHoTen = new JTextField();
-    public JTextField txtLop = new JTextField();
-    public JTextField txtKhoa = new JTextField();
-    public JTextField txtTimKiem = new JTextField();
+    // ===== INPUT =====
+    public JComboBox<String> cboHocKy = new JComboBox<>();
+    public JTextField txtNamHoc = new JTextField();
+    public JTextField txtTongLuot = new JTextField();
 
-    public JComboBox<String> cbGioiTinh = new JComboBox<>(new String[]{"Nam", "Nữ"});
-    public JSpinner spNgaySinh = new JSpinner(new SpinnerDateModel(new Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
-
-    public JButton btnThem = new JButton("Thêm");
-    public JButton btnSua = new JButton("Sửa");
-    public JButton btnXoa = new JButton("Xoá");
+    // ===== BUTTONS =====
+    public JButton btnThongKe = new JButton("Thống kê");
     public JButton btnLamMoi = new JButton("Làm mới");
-
-    public JButton btnTimKiem = new JButton("Tìm kiếm");
     public JButton btnXuatExcel = new JButton("Xuất Excel");
-    public JButton btnNhapExcel = new JButton("Nhập Excel");
-
     public JButton btnQuayLai = new JButton("Quay lại");
 
+    // ===== TABLE =====
     public DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã SV", "Họ tên", "Ngày sinh", "Giới tính", "Lớp", "Khoa"}, 0
+            new Object[]{"Môn học", "Số SV"}, 0
     ) {
         @Override public boolean isCellEditable(int row, int column) { return false; }
     };
-    public JTable tblSinhVien = new JTable(model);
+    public JTable tbl = new JTable(model);
 
-    public view_QLSinhVien() {
-        setTitle("Quản lý sinh viên");
+    public view_ThongKe() {
+        setTitle("Thống kê");
         setSize(1180, 650);
         setMinimumSize(new Dimension(1050, 600));
         setLocationRelativeTo(null);
@@ -60,20 +50,25 @@ public class view_QLSinhVien extends JFrame {
         catch (Exception ignored) {}
 
         Font fTitle = new Font("Segoe UI", Font.BOLD, 18);
-        Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
+        Font fLabel = new Font("Segoe UI", Font.BOLD, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
+
+        // readonly
+        txtNamHoc.setEditable(false);
+        txtTongLuot.setEditable(false);
 
         JPanel root = new JPanel(new BorderLayout(12, 12));
         root.setBorder(new EmptyBorder(12, 12, 12, 12));
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
+        // ===== TOP BAR =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
 
-        JLabel lblTitle = new JLabel("Quản lý sinh viên", SwingConstants.CENTER);
-        lblTitle.setFont(fTitle);
+        JLabel lblTitle = new JLabel("Thống kê đăng ký tín chỉ", SwingConstants.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
         JPanel topRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         topRight.setOpaque(false);
@@ -83,30 +78,20 @@ public class view_QLSinhVien extends JFrame {
         topBar.add(lblTitle, BorderLayout.CENTER);
         topBar.add(topRight, BorderLayout.EAST);
 
+        // ===== INPUT WRAP =====
         JPanel inputWrap = new JPanel(new BorderLayout(12, 12));
         inputWrap.setBackground(Color.WHITE);
-        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin sinh viên"));
+        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin thống kê"));
 
-        JPanel form = new JPanel(new GridLayout(2, 6, 12, 10));
+        JPanel form = new JPanel(new GridLayout(1, 3, 12, 10));
         form.setOpaque(false);
         form.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        spNgaySinh.setEditor(new JSpinner.DateEditor(spNgaySinh, "yyyy-MM-dd"));
-        spNgaySinh.setFont(fInput);
+        form.add(comboBox("Học kỳ", cboHocKy, fLabel, fInput));
+        form.add(fieldBox("Năm học", txtNamHoc, fLabel, fInput));
+        form.add(fieldBox("Tổng lượt đăng ký", txtTongLuot, fLabel, fInput));
 
-        form.add(fieldBox("Mã sinh viên", txtMaSV, fLabel, fInput));
-        form.add(fieldBox("Họ tên", txtHoTen, fLabel, fInput));
-        form.add(spinnerBox("Ngày sinh", spNgaySinh, fLabel));
-        form.add(comboBox("Giới tính", cbGioiTinh, fLabel, fInput));
-        form.add(fieldBox("Lớp", txtLop, fLabel, fInput));
-        form.add(fieldBox("Khoa", txtKhoa, fLabel, fInput));
-
-        form.add(new JPanel()); form.add(new JPanel()); form.add(new JPanel());
-        form.add(new JPanel()); form.add(new JPanel()); form.add(new JPanel());
-        for (Component c : form.getComponents()) {
-            if (c instanceof JPanel) ((JPanel) c).setOpaque(false);
-        }
-
+        // ===== ACTION BAR =====
         JPanel actionBar = new JPanel(new BorderLayout());
         actionBar.setOpaque(false);
         actionBar.setBorder(new EmptyBorder(0, 14, 12, 14));
@@ -114,37 +99,16 @@ public class view_QLSinhVien extends JFrame {
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         left.setOpaque(false);
 
-        stylePrimary(btnThem);
-        stylePrimary(btnSua);
-        styleDanger(btnXoa);
+        stylePrimary(btnThongKe);
         styleNeutral(btnLamMoi);
-        stylePrimary(btnTimKiem);
         stylePrimary(btnXuatExcel);
-        styleNeutral(btnNhapExcel);
 
-        JLabel lblKey = new JLabel("Từ khoá");
-        lblKey.setFont(fLabel);
-
-        txtTimKiem.setFont(fInput);
-        txtTimKiem.setPreferredSize(new Dimension(260, 36));
-        txtTimKiem.setBorder(new CompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                new EmptyBorder(6, 8, 6, 8)
-        ));
-
-        left.add(btnThem);
-        left.add(btnSua);
-        left.add(btnXoa);
+        left.add(btnThongKe);
         left.add(btnLamMoi);
-        left.add(Box.createHorizontalStrut(16));
-        left.add(lblKey);
-        left.add(txtTimKiem);
-        left.add(btnTimKiem);
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         right.setOpaque(false);
         right.add(btnXuatExcel);
-        right.add(btnNhapExcel);
 
         actionBar.add(left, BorderLayout.WEST);
         actionBar.add(right, BorderLayout.EAST);
@@ -152,34 +116,31 @@ public class view_QLSinhVien extends JFrame {
         inputWrap.add(form, BorderLayout.CENTER);
         inputWrap.add(actionBar, BorderLayout.SOUTH);
 
+        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
-        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách sinh viên"));
+        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách thống kê"));
 
-        tblSinhVien.setRowHeight(30);
-        tblSinhVien.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tblSinhVien.setGridColor(new Color(230, 230, 230));
-        tblSinhVien.setShowGrid(true);
-        tblSinhVien.setSelectionBackground(new Color(210, 225, 245));
-        tblSinhVien.setSelectionForeground(Color.BLACK);
+        tbl.setRowHeight(30);
+        tbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tbl.setGridColor(new Color(230, 230, 230));
+        tbl.setShowGrid(true);
+        tbl.setSelectionBackground(new Color(210, 225, 245));
+        tbl.setSelectionForeground(Color.BLACK);
 
-        JTableHeader header = tblSinhVien.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        JTableHeader header = tbl.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13)); // header in đậm
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 34));
 
+        // căn giữa cột "Số SV"
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-        tblSinhVien.getColumnModel().getColumn(2).setCellRenderer(center);
-        tblSinhVien.getColumnModel().getColumn(3).setCellRenderer(center);
+        tbl.getColumnModel().getColumn(1).setCellRenderer(center);
 
-        tblSinhVien.getColumnModel().getColumn(0).setPreferredWidth(120);
-        tblSinhVien.getColumnModel().getColumn(1).setPreferredWidth(300);
-        tblSinhVien.getColumnModel().getColumn(2).setPreferredWidth(130);
-        tblSinhVien.getColumnModel().getColumn(3).setPreferredWidth(110);
-        tblSinhVien.getColumnModel().getColumn(4).setPreferredWidth(120);
-        tblSinhVien.getColumnModel().getColumn(5).setPreferredWidth(160);
+        tbl.getColumnModel().getColumn(0).setPreferredWidth(700);
+        tbl.getColumnModel().getColumn(1).setPreferredWidth(120);
 
-        JScrollPane sp = new JScrollPane(tblSinhVien);
+        JScrollPane sp = new JScrollPane(tbl);
         sp.setBorder(new EmptyBorder(10, 10, 10, 10));
         sp.getViewport().setBackground(Color.WHITE);
         tableWrap.add(sp, BorderLayout.CENTER);
@@ -195,13 +156,14 @@ public class view_QLSinhVien extends JFrame {
         root.add(topBar, BorderLayout.NORTH);
         root.add(centerWrap, BorderLayout.CENTER);
     }
-    
+
+    // ===== helper UI blocks =====
     private JPanel fieldBox(String label, JTextField field, Font fLabel, Font fInput) {
         JPanel p = new JPanel();
         p.setOpaque(false);
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-        JLabel l = new JLabel(label, SwingConstants.CENTER);
+        JLabel l = new JLabel(label, SwingConstants.CENTER); // căn giữa label
         l.setFont(fLabel);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -224,7 +186,7 @@ public class view_QLSinhVien extends JFrame {
         p.setOpaque(false);
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-        JLabel l = new JLabel(label, SwingConstants.CENTER);
+        JLabel l = new JLabel(label, SwingConstants.CENTER); // căn giữa label
         l.setFont(fLabel);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -238,32 +200,10 @@ public class view_QLSinhVien extends JFrame {
         return p;
     }
 
-    private JPanel spinnerBox(String label, JSpinner sp, Font fLabel) {
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-
-        JLabel l = new JLabel(label, SwingConstants.CENTER);
-        l.setFont(fLabel);
-        l.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        sp.setPreferredSize(new Dimension(10, 36));
-        sp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-
-        p.add(l);
-        p.add(Box.createVerticalStrut(6));
-        p.add(sp);
-        return p;
-    }
-
+    // ===== Button styles =====
     private void stylePrimary(JButton b) {
         styleButton(b, new Color(45, 108, 223), Color.WHITE, new Color(30, 90, 200));
     }
-
-    private void styleDanger(JButton b) {
-        styleButton(b, new Color(210, 55, 75), Color.WHITE, new Color(185, 40, 60));
-    }
-
     private void styleNeutral(JButton b) {
         styleButton(b, new Color(235, 235, 235), new Color(40, 40, 40), new Color(220, 220, 220));
     }
@@ -274,7 +214,7 @@ public class view_QLSinhVien extends JFrame {
         b.setOpaque(true);
         b.setBackground(bg);
         b.setForeground(fg);
-        b.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        b.setFont(new Font("Segoe UI", Font.BOLD, 13)); // in đậm chữ nút
         b.setMargin(new Insets(10, 18, 10, 18));
         b.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -284,4 +224,8 @@ public class view_QLSinhVien extends JFrame {
             @Override public void mouseExited(MouseEvent e) { b.setBackground(normal); }
         });
     }
+
+    // tiện cho controller
+    public void clearTable() { model.setRowCount(0); }
+    public void addRow(String mon, int soSv) { model.addRow(new Object[]{mon, soSv}); }
 }
