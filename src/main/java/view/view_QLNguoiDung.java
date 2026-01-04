@@ -1,4 +1,3 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -7,50 +6,49 @@ package view;
 
 /**
  *
- * @author Dvtt
+ * @author thedu
  */
-import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
-public class view_QLSinhVien extends JFrame {
-     public JTextField txtMaSV = new JTextField();
+public class view_QLNguoiDung extends JFrame{
+    public JTextField txtUsername = new JTextField();
+    public JTextField txtPassword = new JTextField();
     public JTextField txtHoTen = new JTextField();
-    public JTextField txtLop = new JTextField();
-    public JTextField txtKhoa = new JTextField();
+    public JComboBox<String> cbTrangThai = new JComboBox<>(new String[]{"Hoạt động", "Khoá"});
     public JTextField txtTimKiem = new JTextField();
 
-    public JComboBox<String> cbGioiTinh = new JComboBox<>(new String[]{"Nam", "Nữ"});
-    public JSpinner spNgaySinh = new JSpinner(new SpinnerDateModel(new Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
-
+    // ===== BUTTONS =====
     public JButton btnThem = new JButton("Thêm");
     public JButton btnSua = new JButton("Sửa");
     public JButton btnXoa = new JButton("Xoá");
     public JButton btnLamMoi = new JButton("Làm mới");
 
     public JButton btnTimKiem = new JButton("Tìm kiếm");
+
+    // ✅ THÊM 2 NÚT EXCEL
     public JButton btnXuatExcel = new JButton("Xuất Excel");
     public JButton btnNhapExcel = new JButton("Nhập Excel");
 
     public JButton btnQuayLai = new JButton("Quay lại");
 
+    // ===== TABLE =====
     public DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã SV", "Họ tên", "Ngày sinh", "Giới tính", "Lớp", "Khoa"}, 0
+        new Object[]{"ID", "Username", "Password", "Họ tên", "Trạng thái"}, 0
     ) {
         @Override public boolean isCellEditable(int row, int column) { return false; }
     };
-    public JTable tblSinhVien = new JTable(model);
+    public JTable tbl = new JTable(model);
 
-    public view_QLSinhVien() {
-        setTitle("Quản lý sinh viên");
+
+    public view_QLNguoiDung() {
+        setTitle("Quản lý người dùng");
         setSize(1180, 650);
         setMinimumSize(new Dimension(1050, 600));
         setLocationRelativeTo(null);
@@ -68,11 +66,12 @@ public class view_QLSinhVien extends JFrame {
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
+        // ===== TOP BAR =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
 
-        JLabel lblTitle = new JLabel("Quản lý sinh viên", SwingConstants.CENTER);
+        JLabel lblTitle = new JLabel("Quản lý người dùng", SwingConstants.CENTER);
         lblTitle.setFont(fTitle);
 
         JPanel topRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
@@ -83,30 +82,21 @@ public class view_QLSinhVien extends JFrame {
         topBar.add(lblTitle, BorderLayout.CENTER);
         topBar.add(topRight, BorderLayout.EAST);
 
+        // ===== INPUT WRAP =====
         JPanel inputWrap = new JPanel(new BorderLayout(12, 12));
         inputWrap.setBackground(Color.WHITE);
-        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin sinh viên"));
+        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin tài khoản"));
 
-        JPanel form = new JPanel(new GridLayout(2, 6, 12, 10));
+        JPanel form = new JPanel(new GridLayout(1, 4, 12, 10));
         form.setOpaque(false);
         form.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        spNgaySinh.setEditor(new JSpinner.DateEditor(spNgaySinh, "yyyy-MM-dd"));
-        spNgaySinh.setFont(fInput);
-
-        form.add(fieldBox("Mã sinh viên", txtMaSV, fLabel, fInput));
+        form.add(fieldBox("Username", txtUsername, fLabel, fInput));
+        form.add(fieldBox("Password", txtPassword, fLabel, fInput));
         form.add(fieldBox("Họ tên", txtHoTen, fLabel, fInput));
-        form.add(spinnerBox("Ngày sinh", spNgaySinh, fLabel));
-        form.add(comboBox("Giới tính", cbGioiTinh, fLabel, fInput));
-        form.add(fieldBox("Lớp", txtLop, fLabel, fInput));
-        form.add(fieldBox("Khoa", txtKhoa, fLabel, fInput));
+        form.add(comboBox("Trạng thái", cbTrangThai, fLabel, fInput));
 
-        form.add(new JPanel()); form.add(new JPanel()); form.add(new JPanel());
-        form.add(new JPanel()); form.add(new JPanel()); form.add(new JPanel());
-        for (Component c : form.getComponents()) {
-            if (c instanceof JPanel) ((JPanel) c).setOpaque(false);
-        }
-
+        // ===== ACTION BAR =====
         JPanel actionBar = new JPanel(new BorderLayout());
         actionBar.setOpaque(false);
         actionBar.setBorder(new EmptyBorder(0, 14, 12, 14));
@@ -119,6 +109,8 @@ public class view_QLSinhVien extends JFrame {
         styleDanger(btnXoa);
         styleNeutral(btnLamMoi);
         stylePrimary(btnTimKiem);
+
+        // Excel style
         stylePrimary(btnXuatExcel);
         styleNeutral(btnNhapExcel);
 
@@ -152,34 +144,33 @@ public class view_QLSinhVien extends JFrame {
         inputWrap.add(form, BorderLayout.CENTER);
         inputWrap.add(actionBar, BorderLayout.SOUTH);
 
+        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
-        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách sinh viên"));
+        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách người dùng"));
 
-        tblSinhVien.setRowHeight(30);
-        tblSinhVien.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tblSinhVien.setGridColor(new Color(230, 230, 230));
-        tblSinhVien.setShowGrid(true);
-        tblSinhVien.setSelectionBackground(new Color(210, 225, 245));
-        tblSinhVien.setSelectionForeground(Color.BLACK);
+        tbl.setRowHeight(30);
+        tbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tbl.setGridColor(new Color(230, 230, 230));
+        tbl.setShowGrid(true);
+        tbl.setSelectionBackground(new Color(210, 225, 245));
+        tbl.setSelectionForeground(Color.BLACK);
 
-        JTableHeader header = tblSinhVien.getTableHeader();
+        JTableHeader header = tbl.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 34));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-        tblSinhVien.getColumnModel().getColumn(2).setCellRenderer(center);
-        tblSinhVien.getColumnModel().getColumn(3).setCellRenderer(center);
+        tbl.getColumnModel().getColumn(0).setCellRenderer(center);
+        tbl.getColumnModel().getColumn(3).setCellRenderer(center);
 
-        tblSinhVien.getColumnModel().getColumn(0).setPreferredWidth(120);
-        tblSinhVien.getColumnModel().getColumn(1).setPreferredWidth(300);
-        tblSinhVien.getColumnModel().getColumn(2).setPreferredWidth(130);
-        tblSinhVien.getColumnModel().getColumn(3).setPreferredWidth(110);
-        tblSinhVien.getColumnModel().getColumn(4).setPreferredWidth(120);
-        tblSinhVien.getColumnModel().getColumn(5).setPreferredWidth(160);
+        tbl.getColumnModel().getColumn(0).setPreferredWidth(80);
+        tbl.getColumnModel().getColumn(1).setPreferredWidth(220);
+        tbl.getColumnModel().getColumn(2).setPreferredWidth(320);
+        tbl.getColumnModel().getColumn(3).setPreferredWidth(120);
 
-        JScrollPane sp = new JScrollPane(tblSinhVien);
+        JScrollPane sp = new JScrollPane(tbl);
         sp.setBorder(new EmptyBorder(10, 10, 10, 10));
         sp.getViewport().setBackground(Color.WHITE);
         tableWrap.add(sp, BorderLayout.CENTER);
@@ -195,7 +186,18 @@ public class view_QLSinhVien extends JFrame {
         root.add(topBar, BorderLayout.NORTH);
         root.add(centerWrap, BorderLayout.CENTER);
     }
-    
+
+    public void clearForm() {
+        txtUsername.setText("");
+        txtPassword.setText("");
+        txtHoTen.setText("");
+        cbTrangThai.setSelectedIndex(0);
+        txtTimKiem.setText("");
+        tbl.clearSelection();
+        txtUsername.setEnabled(true);
+    }
+
+    // ===== helper UI blocks =====
     private JPanel fieldBox(String label, JTextField field, Font fLabel, Font fInput) {
         JPanel p = new JPanel();
         p.setOpaque(false);
@@ -238,32 +240,12 @@ public class view_QLSinhVien extends JFrame {
         return p;
     }
 
-    private JPanel spinnerBox(String label, JSpinner sp, Font fLabel) {
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-
-        JLabel l = new JLabel(label, SwingConstants.CENTER);
-        l.setFont(fLabel);
-        l.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        sp.setPreferredSize(new Dimension(10, 36));
-        sp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-
-        p.add(l);
-        p.add(Box.createVerticalStrut(6));
-        p.add(sp);
-        return p;
-    }
-
     private void stylePrimary(JButton b) {
         styleButton(b, new Color(45, 108, 223), Color.WHITE, new Color(30, 90, 200));
     }
-
     private void styleDanger(JButton b) {
         styleButton(b, new Color(210, 55, 75), Color.WHITE, new Color(185, 40, 60));
     }
-
     private void styleNeutral(JButton b) {
         styleButton(b, new Color(235, 235, 235), new Color(40, 40, 40), new Color(220, 220, 220));
     }
@@ -284,5 +266,4 @@ public class view_QLSinhVien extends JFrame {
             @Override public void mouseExited(MouseEvent e) { b.setBackground(normal); }
         });
     }
-
 }

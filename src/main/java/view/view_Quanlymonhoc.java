@@ -8,14 +8,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import model.model_Khoa;
+
 
 public class view_Quanlymonhoc extends JFrame {
 
     public JTextField txtMaMon = new JTextField();
     public JTextField txtTenMon = new JTextField();
     public JTextField txtTinChi = new JTextField();
-    public JComboBox<model.model_Khoa> cboKhoa = new JComboBox<>();
+ 
 
     public JTextField txtTim = new JTextField();
 
@@ -89,7 +89,7 @@ public class view_Quanlymonhoc extends JFrame {
         row1.add(fieldBox("Mã môn", txtMaMon, fLabel, fInput));
         row1.add(fieldBox("Tên môn", txtTenMon, fLabel, fInput));
         row1.add(fieldBox("Tín chỉ", txtTinChi, fLabel, fInput));
-        row1.add(comboBox("Khoa", cboKhoa, fLabel, fInput));
+        
 
         // --- ROW 2: CRUD + search + excel ---
         JPanel row2 = new JPanel(new BorderLayout());
