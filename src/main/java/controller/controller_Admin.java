@@ -18,7 +18,9 @@ import view.view_Admin;
 import view.view_Dangnhap;
 import view.view_QLNguoiDung;
 import view.view_QLSinhVien;
+import view.view_QLdangky;
 import view.view_Quanlymonhoc;
+import view.view_ThongKe;
 
 /**
  *
@@ -36,6 +38,8 @@ public class controller_Admin {
         v.btnQuanLyMonHoc.addActionListener(e -> moQuanlymonhoc());
         v.btnDangXuat.addActionListener(e -> dangXuat());
         v.btnQuanLyNguoiDung.addActionListener(e-> moQLNguoiDung());
+        v.btnThongKe.addActionListener(e -> moThongKe());
+        v.btnQuanLyDangKyTinChi.addActionListener(e -> moQLdangky());
         
     }
 
@@ -54,6 +58,18 @@ public class controller_Admin {
     private void moQLNguoiDung() {
         view_QLNguoiDung man = new view_QLNguoiDung();
         new controller_QLNguoiDung(man);
+        man.setVisible(true);
+    }
+    
+    private void moThongKe() {
+        view_ThongKe tk = new view_ThongKe();
+        new controller_ThongKe(tk);
+        tk.setVisible(true);
+    }
+    
+    private void moQLdangky(){
+        view_QLdangky man =new view_QLdangky();
+        new controller_QLdangky(man);
         man.setVisible(true);
     }
 
