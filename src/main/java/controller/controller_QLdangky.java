@@ -442,16 +442,23 @@ public class controller_QLdangky {
         }
 
         String sql = """
-            SELECT mh.ma_mon, mh.ten_mon, mh.so_tin_chi, sv.lop,
-                   CONCAT(lhp.thu,' ',lhp.ca_hoc) AS lich_hoc,
-                   lhp.phong_hoc, lhp.ma_hoc_ky
-            FROM DangKyTinChi dk
-            JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
-            JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
-            JOIN MonHoc mh ON lhp.ma_mon = mh.ma_mon
-            WHERE mh.ma_mon = ?
-              AND sv.lop = ?
-              AND lhp.ma_hoc_ky = ?
+            SELECT mh.ma_mon,mh.ten_mon,mh.so_tin_chi,sv.lop,CONCAT(lhp.thu,' ',lhp.ca_hoc) AS lich_hoc,lhp.phong_hoc,lhp.ma_hoc_ky
+              FROM DangKyTinChi dk
+              JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
+              JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
+              JOIN MonHoc mh ON lhp.ma_mon = mh.ma_mon
+              WHERE mh.ma_mon = ?
+                AND sv.lop = ?
+                AND lhp.ma_hoc_ky = ?
+              GROUP BY
+                  mh.ma_mon,
+                  mh.ten_mon,
+                  mh.so_tin_chi,
+                  sv.lop,
+                  lhp.thu,
+                  lhp.ca_hoc,
+                  lhp.phong_hoc,
+                  lhp.ma_hoc_ky;
         """;
 
         try (Connection con = ConnectDB.getConnection();
@@ -489,15 +496,21 @@ public class controller_QLdangky {
         String maHK = view.cbHocKy.getSelectedItem().toString();
 
         String sql = """
-            SELECT mh.ma_mon, mh.ten_mon, mh.so_tin_chi, sv.lop,
-                   CONCAT(lhp.thu,' ',lhp.ca_hoc) AS lich_hoc,
-                   lhp.phong_hoc, lhp.ma_hoc_ky
-            FROM DangKyTinChi dk
-            JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
-            JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
-            JOIN MonHoc mh ON lhp.ma_mon = mh.ma_mon
-            WHERE sv.lop = ?
-              AND lhp.ma_hoc_ky = ?
+            SELECT mh.ma_mon,mh.ten_mon,mh.so_tin_chi,sv.lop , CONCAT(lhp.thu,' ',lhp.ca_hoc) AS lich_hoc, lhp.phong_hoc, lhp.ma_hoc_ky
+              FROM DangKyTinChi dk
+              JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
+              JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
+              JOIN MonHoc mh ON lhp.ma_mon = mh.ma_mon
+              WHERE sv.lop = ? AND lhp.ma_hoc_ky = ?
+              GROUP BY
+                  mh.ma_mon,
+                  mh.ten_mon,
+                  mh.so_tin_chi,
+                  sv.lop,
+                  lhp.thu,
+                  lhp.ca_hoc,
+                  lhp.phong_hoc,
+                  lhp.ma_hoc_ky
             
         """;
 
@@ -524,34 +537,34 @@ public class controller_QLdangky {
         }
     }
     
-    private boolean biTrungPhongCa(String phong, String thu, String ca, String maHK) {
+   private boolean biTrungPhongCa(String phong, String thu, String ca, String maHK) {
 
-        String sql = """
-            SELECT COUNT(*)
-            FROM DangKyTinChi dk
-            JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
-            WHERE lhp.phong_hoc = ?
-            AND lhp.thu = ?
-            AND lhp.ca_hoc = ?
-            AND lhp.ma_hoc_ky = ?
-        """;
+    String sql = """
+        SELECT COUNT(*)
+        FROM DangKyTinChi dk
+        JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
+        WHERE lhp.phong_hoc = ?
+          AND lhp.thu = ?
+          AND lhp.ca_hoc = ?
+          AND lhp.ma_hoc_ky = ?
+    """;
 
-        try (Connection con = ConnectDB.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+    try (Connection con = ConnectDB.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, phong);
-            ps.setString(2, thu);
-            ps.setString(3, ca);
-            ps.setString(4, maHK);
+        ps.setString(1, phong);
+        ps.setString(2, thu);
+        ps.setString(3, ca);
+        ps.setString(4, maHK);
 
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
         }
-        return false;
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return false;
+}
 }
