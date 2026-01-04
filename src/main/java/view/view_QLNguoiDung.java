@@ -262,5 +262,3 @@ public class view_QLNguoiDung extends JFrame {
         });
     }
 }
-    
-
