@@ -13,11 +13,16 @@ import java.sql.SQLException;
  * @author Dvtt
  */
 public class ConnectDB {
-   public static Connection getConnection() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/QLTC?useUnicode=true&characterEncoding=UTF-8";
-        String user = "root";
-        String pass = "123456";
-        Class.forName("com.mysql.cj.jdbc.Driver");
+    private static String url =
+            "jdbc:sqlserver://PHAMHIEN;" +
+                    "databaseName=QLTC;" +
+                    "encrypt=false;" +
+                    "trustServerCertificate=true;";
+
+    private static String user = "sa";
+    private static String pass = "123456";
+
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, pass);
     }
 }
