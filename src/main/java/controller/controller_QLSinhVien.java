@@ -65,18 +65,31 @@ public class controller_QLSinhVien {
         v.btnQuayLai.addActionListener(e -> v.dispose());
         
         v.btnThem.addActionListener(e -> {
+            String maSV  = v.txtMaSV.getText().trim();
+            String hoTen = v.txtHoTen.getText().trim();
+
+            if (maSV.isEmpty() || hoTen.isEmpty()) {
+                return;
+            }
+
             try (Connection c = ConnectDB.getConnection()) {
                 PreparedStatement ps = c.prepareStatement(
-                        "INSERT INTO SinhVien VALUES (?,?,?,?,?,?)"
+                    "INSERT INTO SinhVien VALUES (?,?,?,?,?,?)"
                 );
-                ps.setString(1, v.txtMaSV.getText());
-                ps.setString(2, v.txtHoTen.getText());
-                ps.setDate(3, new Date(((java.util.Date) v.spNgaySinh.getValue()).getTime()));
+                ps.setString(1, maSV);
+                ps.setString(2, hoTen);
+                ps.setDate(3, new java.sql.Date(
+                    ((java.util.Date) v.spNgaySinh.getValue()).getTime()
+                ));
                 ps.setString(4, v.cbGioiTinh.getSelectedItem().toString());
                 ps.setString(5, v.txtLop.getText());
                 ps.setString(6, v.txtKhoa.getText());
+
                 ps.executeUpdate();
                 loadTable("");
+                v.btnLamMoi.doClick();
+
+            } catch (SQLIntegrityConstraintViolationException ex) {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -117,8 +130,12 @@ public class controller_QLSinhVien {
             v.txtHoTen.setText("");
             v.txtLop.setText("");
             v.txtKhoa.setText("");
+            v.txtMaSV.setEditable(true);  
+            v.tblSinhVien.clearSelection(); 
+
             loadTable("");
         });
+
 
         v.btnTimKiem.addActionListener(e ->
                 loadTable(v.txtTimKiem.getText())
@@ -167,29 +184,78 @@ public class controller_QLSinhVien {
     }
 
     private void nhapExcel() {
-        JFileChooser fc = new JFileChooser();
-        if (fc.showOpenDialog(v) == JFileChooser.APPROVE_OPTION) {
-            try (Workbook wb = new XSSFWorkbook(new FileInputStream(fc.getSelectedFile()))) {
-                Sheet sheet = wb.getSheetAt(0);
-                Connection c = ConnectDB.getConnection();
+    JFileChooser fc = new JFileChooser();
+    if (fc.showOpenDialog(v) != JFileChooser.APPROVE_OPTION) return;
 
-                for (Row r : sheet) {
-                    if (r.getRowNum() == 0) continue;
-                    PreparedStatement ps = c.prepareStatement(
-                            "INSERT INTO SinhVien VALUES (?,?,?,?,?,?)"
-                    );
-                    ps.setString(1, r.getCell(0).getStringCellValue());
-                    ps.setString(2, r.getCell(1).getStringCellValue());
-                    ps.setDate(3, Date.valueOf(r.getCell(2).getStringCellValue()));
-                    ps.setString(4, r.getCell(3).getStringCellValue());
-                    ps.setString(5, r.getCell(4).getStringCellValue());
-                    ps.setString(6, r.getCell(5).getStringCellValue());
-                    ps.executeUpdate();
+    int success = 0;
+    int skipped = 0;
+
+    try (Workbook wb = new XSSFWorkbook(new FileInputStream(fc.getSelectedFile()));
+         Connection c = ConnectDB.getConnection()) {
+
+        Sheet sheet = wb.getSheetAt(0);
+
+        for (Row r : sheet) {
+
+            if (r.getRowNum() == 0) continue;
+
+            try {
+                String maSV = r.getCell(0).getStringCellValue().trim();
+                String hoTen = r.getCell(1).getStringCellValue().trim();
+
+                // ===== XỬ LÝ NGÀY SINH (DATE HOẶC STRING) =====
+                Cell cellNgaySinh = r.getCell(2);
+                java.sql.Date ngaySinh;
+
+                if (cellNgaySinh.getCellType() == CellType.NUMERIC) {
+                    java.util.Date d = cellNgaySinh.getDateCellValue();
+                    ngaySinh = new java.sql.Date(d.getTime());
+                } else {
+                    ngaySinh = java.sql.Date.valueOf(cellNgaySinh.getStringCellValue().trim());
                 }
-                loadTable("");
-            } catch (Exception e) {
-                e.printStackTrace();
+
+                String gioiTinh = r.getCell(3).getStringCellValue().trim();
+                String lop = r.getCell(4).getStringCellValue().trim();
+                String khoa = r.getCell(5).getStringCellValue().trim();
+
+                PreparedStatement check = c.prepareStatement(
+                        "SELECT COUNT(*) FROM SinhVien WHERE ma_sv=?"
+                );
+                check.setString(1, maSV);
+                ResultSet rs = check.executeQuery();
+                rs.next();
+                if (rs.getInt(1) > 0) {
+                    skipped++;
+                    continue;
+                }
+
+                PreparedStatement ps = c.prepareStatement(
+                        "INSERT INTO SinhVien VALUES (?,?,?,?,?,?)"
+                );
+                ps.setString(1, maSV);
+                ps.setString(2, hoTen);
+                ps.setDate(3, ngaySinh);
+                ps.setString(4, gioiTinh);
+                ps.setString(5, lop);
+                ps.setString(6, khoa);
+                ps.executeUpdate();
+
+                success++;
+
+            } catch (Exception rowEx) {
+                skipped++;
             }
+        }
+
+        loadTable("");
+        JOptionPane.showMessageDialog(
+                v,
+                "Nhập Excel xong!\nThành công: " + success + "\nBỏ qua: " + skipped
+        );
+
+      } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(v, "Lỗi khi nhập Excel");
         }
     }
 }
