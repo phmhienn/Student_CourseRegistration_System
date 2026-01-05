@@ -12,132 +12,114 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-public class view_Quanlymonhoc extends JFrame {
+public class view_ThongKe extends JFrame {
 
-    public JTextField txtMaMon = new JTextField();
-    public JTextField txtTenMon = new JTextField();
-    public JTextField txtTinChi = new JTextField();
-    public JTextField txtTim = new JTextField();
+    // ===== INPUT =====
+    public JComboBox<String> cboHocKy = new JComboBox<>();
+    public JTextField txtNamHoc = new JTextField();
+    public JTextField txtTongLuot = new JTextField();
 
-    public JButton btnThem = new JButton("Thêm");
-    public JButton btnSua = new JButton("Sửa");
-    public JButton btnXoa = new JButton("Xoá");
+    // ===== BUTTONS =====
+    public JButton btnThongKe = new JButton("Thống kê");
     public JButton btnLamMoi = new JButton("Làm mới");
-
-    public JButton btnTim = new JButton("Tìm kiếm");
     public JButton btnXuatExcel = new JButton("Xuất Excel");
-    public JButton btnNhapExcel = new JButton("Nhập Excel");
-
     public JButton btnQuayLai = new JButton("Quay lại");
 
-    public DefaultTableModel dtm = new DefaultTableModel(
-            new String[]{"Mã môn", "Tên môn", "Số tín chỉ"}, 0
+    // ===== TABLE =====
+    public DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"Môn học", "Số SV"}, 0
     ) {
         @Override public boolean isCellEditable(int row, int column) { return false; }
     };
-    public JTable tbl = new JTable(dtm);
+    public JTable tbl = new JTable(model);
 
-    public view_Quanlymonhoc() {
-        setTitle("Quản lý môn học");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(1050, 650);
-        setMinimumSize(new Dimension(980, 560));
+    public view_ThongKe() {
+        setTitle("Thống kê");
+        setSize(1180, 650);
+        setMinimumSize(new Dimension(1050, 600));
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}
 
         Font fTitle = new Font("Segoe UI", Font.BOLD, 18);
-        Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
+        Font fLabel = new Font("Segoe UI", Font.BOLD, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
+
+        // readonly
+        txtNamHoc.setEditable(false);
+        txtTongLuot.setEditable(false);
 
         JPanel root = new JPanel(new BorderLayout(12, 12));
         root.setBorder(new EmptyBorder(12, 12, 12, 12));
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
+        // ===== TOP BAR =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
 
-        JLabel lblTitle = new JLabel("Quản lý môn học", SwingConstants.CENTER);
-        lblTitle.setFont(fTitle);
+        JLabel lblTitle = new JLabel("Thống kê đăng ký tín chỉ", SwingConstants.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
-        JPanel rightTop = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        rightTop.setOpaque(false);
+        JPanel topRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        topRight.setOpaque(false);
         styleNeutral(btnQuayLai);
-        rightTop.add(btnQuayLai);
+        topRight.add(btnQuayLai);
 
         topBar.add(lblTitle, BorderLayout.CENTER);
-        topBar.add(rightTop, BorderLayout.EAST);
+        topBar.add(topRight, BorderLayout.EAST);
 
-        JPanel inputWrap = new JPanel();
+        // ===== INPUT WRAP =====
+        JPanel inputWrap = new JPanel(new BorderLayout(12, 12));
         inputWrap.setBackground(Color.WHITE);
-        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin môn học"));
-        inputWrap.setLayout(new BoxLayout(inputWrap, BoxLayout.Y_AXIS));
+        inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin thống kê"));
 
-        JPanel row1 = new JPanel(new GridLayout(1, 3, 18, 0));
-        row1.setOpaque(false);
-        row1.setBorder(new EmptyBorder(10, 16, 6, 16));
-        row1.add(fieldBox("Mã môn", txtMaMon, fLabel, fInput));
-        row1.add(fieldBox("Tên môn", txtTenMon, fLabel, fInput));
-        row1.add(fieldBox("Số tín chỉ", txtTinChi, fLabel, fInput));
+        JPanel form = new JPanel(new GridLayout(1, 3, 12, 10));
+        form.setOpaque(false);
+        form.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JPanel row2 = new JPanel(new BorderLayout());
-        row2.setOpaque(false);
-        row2.setBorder(new EmptyBorder(8, 16, 12, 16));
+        form.add(comboBox("Học kỳ", cboHocKy, fLabel, fInput));
+        form.add(fieldBox("Năm học", txtNamHoc, fLabel, fInput));
+        form.add(fieldBox("Tổng lượt đăng ký", txtTongLuot, fLabel, fInput));
+
+        // ===== ACTION BAR =====
+        JPanel actionBar = new JPanel(new BorderLayout());
+        actionBar.setOpaque(false);
+        actionBar.setBorder(new EmptyBorder(0, 14, 12, 14));
 
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         left.setOpaque(false);
 
-        stylePrimary(btnThem);
-        stylePrimary(btnSua);
-        styleDanger(btnXoa);
+        stylePrimary(btnThongKe);
         styleNeutral(btnLamMoi);
-        stylePrimary(btnTim);
+        stylePrimary(btnXuatExcel);
 
-        JLabel lblKey = new JLabel("Từ khoá");
-        lblKey.setFont(fLabel);
-
-        txtTim.setFont(fInput);
-        txtTim.setPreferredSize(new Dimension(195, 36));
-        txtTim.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                new EmptyBorder(6, 8, 6, 8)
-        ));
-
-        left.add(btnThem);
-        left.add(btnSua);
-        left.add(btnXoa);
+        left.add(btnThongKe);
         left.add(btnLamMoi);
-        left.add(Box.createHorizontalStrut(18));
-        left.add(lblKey);
-        left.add(txtTim);
-        left.add(btnTim);
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         right.setOpaque(false);
-
-        stylePrimary(btnXuatExcel);
-        styleNeutral(btnNhapExcel);
-
         right.add(btnXuatExcel);
-        right.add(btnNhapExcel);
 
-        row2.add(left, BorderLayout.WEST);
-        row2.add(right, BorderLayout.EAST);
+        actionBar.add(left, BorderLayout.WEST);
+        actionBar.add(right, BorderLayout.EAST);
 
-        inputWrap.add(row1);
-        inputWrap.add(row2);
+        inputWrap.add(form, BorderLayout.CENTER);
+        inputWrap.add(actionBar, BorderLayout.SOUTH);
 
+        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
-        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách môn học"));
+        tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách thống kê"));
 
         tbl.setRowHeight(30);
         tbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -147,26 +129,26 @@ public class view_Quanlymonhoc extends JFrame {
         tbl.setSelectionForeground(Color.BLACK);
 
         JTableHeader header = tbl.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13)); // header in đậm
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 34));
 
+        // căn giữa cột "Số SV"
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-        tbl.getColumnModel().getColumn(2).setCellRenderer(center);
+        tbl.getColumnModel().getColumn(1).setCellRenderer(center);
 
-        tbl.getColumnModel().getColumn(0).setPreferredWidth(160);
-        tbl.getColumnModel().getColumn(1).setPreferredWidth(640);
-        tbl.getColumnModel().getColumn(2).setPreferredWidth(120);
+        tbl.getColumnModel().getColumn(0).setPreferredWidth(700);
+        tbl.getColumnModel().getColumn(1).setPreferredWidth(120);
 
         JScrollPane sp = new JScrollPane(tbl);
         sp.setBorder(new EmptyBorder(10, 10, 10, 10));
         sp.getViewport().setBackground(Color.WHITE);
-
         tableWrap.add(sp, BorderLayout.CENTER);
 
         JPanel centerWrap = new JPanel();
         centerWrap.setLayout(new BoxLayout(centerWrap, BoxLayout.Y_AXIS));
         centerWrap.setOpaque(false);
+
         centerWrap.add(inputWrap);
         centerWrap.add(Box.createVerticalStrut(12));
         centerWrap.add(tableWrap);
@@ -175,19 +157,20 @@ public class view_Quanlymonhoc extends JFrame {
         root.add(centerWrap, BorderLayout.CENTER);
     }
 
+    // ===== helper UI blocks =====
     private JPanel fieldBox(String label, JTextField field, Font fLabel, Font fInput) {
         JPanel p = new JPanel();
         p.setOpaque(false);
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-        JLabel l = new JLabel(label, SwingConstants.CENTER);
+        JLabel l = new JLabel(label, SwingConstants.CENTER); // căn giữa label
         l.setFont(fLabel);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         field.setFont(fInput);
         field.setPreferredSize(new Dimension(10, 36));
         field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-        field.setBorder(BorderFactory.createCompoundBorder(
+        field.setBorder(new CompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200)),
                 new EmptyBorder(6, 8, 6, 8)
         ));
@@ -198,11 +181,28 @@ public class view_Quanlymonhoc extends JFrame {
         return p;
     }
 
+    private JPanel comboBox(String label, JComboBox<?> cb, Font fLabel, Font fInput) {
+        JPanel p = new JPanel();
+        p.setOpaque(false);
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+
+        JLabel l = new JLabel(label, SwingConstants.CENTER); // căn giữa label
+        l.setFont(fLabel);
+        l.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        cb.setFont(fInput);
+        cb.setPreferredSize(new Dimension(10, 36));
+        cb.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+
+        p.add(l);
+        p.add(Box.createVerticalStrut(6));
+        p.add(cb);
+        return p;
+    }
+
+    // ===== Button styles =====
     private void stylePrimary(JButton b) {
         styleButton(b, new Color(45, 108, 223), Color.WHITE, new Color(30, 90, 200));
-    }
-    private void styleDanger(JButton b) {
-        styleButton(b, new Color(210, 55, 75), Color.WHITE, new Color(185, 40, 60));
     }
     private void styleNeutral(JButton b) {
         styleButton(b, new Color(235, 235, 235), new Color(40, 40, 40), new Color(220, 220, 220));
@@ -214,14 +214,18 @@ public class view_Quanlymonhoc extends JFrame {
         b.setOpaque(true);
         b.setBackground(bg);
         b.setForeground(fg);
-        b.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        b.setFont(new Font("Segoe UI", Font.BOLD, 13)); // in đậm chữ nút
         b.setMargin(new Insets(10, 18, 10, 18));
         b.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         Color normal = bg;
         b.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) { b.setBackground(hover); }
-            @Override public void mouseExited(MouseEvent e)  { b.setBackground(normal); }
+            @Override public void mouseExited(MouseEvent e) { b.setBackground(normal); }
         });
     }
+
+    // tiện cho controller
+    public void clearTable() { model.setRowCount(0); }
+    public void addRow(String mon, int soSv) { model.addRow(new Object[]{mon, soSv}); }
 }

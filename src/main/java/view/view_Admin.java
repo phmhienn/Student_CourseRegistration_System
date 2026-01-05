@@ -11,7 +11,7 @@ public class view_Admin extends JFrame {
     public JButton btnQuanLyMonHoc        = new JButton("Quản lý môn học");
     public JButton btnQLSinhVien          = new JButton("Quản lý sinh viên");
     public JButton btnQLLopHocPhan        = new JButton("Quản lý lớp học phần");
-    public JButton btnXemBaoCao           = new JButton("Xem báo cáo đăng ký");
+    public JButton btnQLGiangVien           = new JButton("Quản lý giảng viên");
 
     public JButton btnQuanLyNguoiDung     = new JButton("Quản lý người dùng");
     public JButton btnQuanLyDangKyTinChi  = new JButton("Quản lý đăng ký tín chỉ");
@@ -69,7 +69,7 @@ public class view_Admin extends JFrame {
 
         styleCardButton(btnQuanLyMonHoc, fBtn, size);
         styleCardButton(btnQLLopHocPhan, fBtn, size);
-        styleCardButton(btnXemBaoCao, fBtn, size);
+        styleCardButton(btnQLGiangVien, fBtn, size);
         styleCardButton(btnQLSinhVien, fBtn, size);
 
         styleCardButton(btnQuanLyNguoiDung, fBtn, size);
@@ -79,7 +79,7 @@ public class view_Admin extends JFrame {
 
         grid.add(btnQuanLyMonHoc);
         grid.add(btnQLLopHocPhan);
-        grid.add(btnXemBaoCao);
+        grid.add(btnQLGiangVien);
         grid.add(btnQLSinhVien);
 
         grid.add(btnQuanLyNguoiDung);
