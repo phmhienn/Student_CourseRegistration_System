@@ -26,7 +26,8 @@ public class controller_Quanlymonhoc {
         v.tbl.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) fillForm();
         });
-
+        
+        v.btnTim.addActionListener(e -> tim());
         v.btnThem.addActionListener(e -> them());
         v.btnSua.addActionListener(e -> sua());
         v.btnXoa.addActionListener(e -> xoa());
@@ -71,8 +72,13 @@ public class controller_Quanlymonhoc {
     private void them() {
         String ma = v.txtMaMon.getText().trim();
         String ten = v.txtTenMon.getText().trim();
-        int tc = Integer.parseInt(v.txtTinChi.getText().trim());
-
+        int tc;
+        try {
+            tc = Integer.parseInt(v.txtTinChi.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(v, "Số tín chỉ phải là số!");
+            return;
+        }
         String sql =
             "INSERT INTO MonHoc(ma_mon,ten_mon,so_tin_chi) VALUES(" +
             "'" + ma + "',N'" + ten + "'," + tc + ")";
@@ -84,7 +90,15 @@ public class controller_Quanlymonhoc {
             loadTable();
             lamMoi();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(v, e.getMessage());
+            if (e.getMessage().toLowerCase().contains("duplicate")
+            || e.getMessage().toLowerCase().contains("primary key")
+            || e.getMessage().toLowerCase().contains("unique")) {
+
+            JOptionPane.showMessageDialog(v, "Mã môn đã tồn tại!");
+
+            } else {
+                JOptionPane.showMessageDialog(v, "Lỗi: " + e.getMessage());
+            }
         }
     }
 
@@ -122,6 +136,36 @@ public class controller_Quanlymonhoc {
             JOptionPane.showMessageDialog(v, e.getMessage());
         }
     }
+    
+    private void tim() {
+        v.dtm.setRowCount(0);
+
+        String key = v.txtTim.getText().trim();
+
+        String sql =
+            "SELECT ma_mon, ten_mon, so_tin_chi " +
+            "FROM MonHoc " +
+            "WHERE ma_mon LIKE '%" + key + "%' " +
+            "OR ten_mon LIKE N'%" + key + "%'";
+
+        try (Connection con = ConnectDB.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                v.dtm.addRow(new Object[]{
+                    rs.getString("ma_mon"),
+                    rs.getString("ten_mon"),
+                    rs.getInt("so_tin_chi")
+                });
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm: " + e.getMessage());
+        }
+    }
+
+
     
     private void xuatExcel() {
         JFileChooser fc = new JFileChooser();
@@ -186,7 +230,7 @@ public class controller_Quanlymonhoc {
 
             Sheet sheet = wb.getSheetAt(0);
 
-            // dữ liệu từ dòng 1 (dòng 0 là header)
+            // dữ liệu từ dòng 1 (dòng 0 là header)-------------
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
@@ -194,7 +238,7 @@ public class controller_Quanlymonhoc {
                 String ma  = row.getCell(0).toString().trim();
                 String ten = row.getCell(1).toString().trim();
 
-                // số tín chỉ có thể đọc ra kiểu 3.0 -> ép về int
+                // số tín chỉ có thể đọc ra kiểu 3.0 -> ép về int--------------
                 int tc = (int) Double.parseDouble(row.getCell(2).toString().trim());
 
                 if (ma.isEmpty() || ten.isEmpty()) continue;

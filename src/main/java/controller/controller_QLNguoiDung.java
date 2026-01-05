@@ -30,13 +30,12 @@ public class controller_QLNguoiDung {
         v.btnSua.addActionListener(e -> sua());
         v.btnXoa.addActionListener(e -> xoa());
         v.btnLamMoi.addActionListener(e -> v.clearForm());
-        v.btnTimKiem.addActionListener(e -> loadTable(v.txtTimKiem.getText().trim()));
+        v.btnTimKiem.addActionListener(e -> tim());
         v.btnXuatExcel.addActionListener(e -> xuatExcel());
         v.btnNhapExcel.addActionListener(e -> nhapExcel());
         v.btnQuayLai.addActionListener(e -> v.dispose());
     }
 
-    // ================= LOAD =================
     private void loadTable(String key) {
         v.model.setRowCount(0);
 
@@ -76,7 +75,6 @@ public class controller_QLNguoiDung {
         v.txtUsername.setEnabled(false);
     }
 
-    // ================= THÊM =================
     private void them() {
         String user = v.txtUsername.getText().trim();
         String pass = v.txtPassword.getText().trim();
@@ -103,7 +101,6 @@ public class controller_QLNguoiDung {
         }
     }
 
-    // ================= SỬA =================
     private void sua() {
         String user = v.txtUsername.getText().trim();
         String pass = v.txtPassword.getText().trim();
@@ -128,7 +125,6 @@ public class controller_QLNguoiDung {
         }
     }
 
-    // ================= XOÁ =================
     private void xoa() {
         String user = v.txtUsername.getText().trim();
         if (user.isEmpty() || user.equalsIgnoreCase("admin")) return;
@@ -145,8 +141,40 @@ public class controller_QLNguoiDung {
             JOptionPane.showMessageDialog(v, e.getMessage());
         }
     }
+    
+    private void tim() {
+        v.model.setRowCount(0);
 
-    // ================= XUẤT EXCEL =================
+        String key = v.txtTimKiem.getText().trim();
+
+        String sql =
+            "SELECT admin_id, username, password, ho_ten, trang_thai " +
+            "FROM Admin " +
+            "WHERE username LIKE '%" + key + "%' " +
+            "OR ho_ten LIKE N'%" + key + "%' " +
+            "ORDER BY admin_id DESC";
+
+        try (Connection con = ConnectDB.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("admin_id");
+                String user = rs.getString("username");
+                String pass = rs.getString("password");
+                String hoten = rs.getString("ho_ten");
+                boolean tt = rs.getBoolean("trang_thai");
+
+                String trangThaiText = tt ? "Hoạt động" : "Khoá";
+
+                v.model.addRow(new Object[]{id, user, pass, hoten, trangThaiText});
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm: " + e.getMessage());
+        }
+    }
+
     private void xuatExcel() {
         JFileChooser fc = new JFileChooser();
         if (fc.showSaveDialog(v) != JFileChooser.APPROVE_OPTION) return;
@@ -189,7 +217,6 @@ public class controller_QLNguoiDung {
         }
     }
 
-    // ================= NHẬP EXCEL =================
     private void nhapExcel() {
         JFileChooser fc = new JFileChooser();
         if (fc.showOpenDialog(v) != JFileChooser.APPROVE_OPTION) return;
