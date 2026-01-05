@@ -38,4 +38,5 @@ public class model_SinhVien {
     public String getGioiTinh() { return gioiTinh; }
     public String getLop() { return lop; }
     public String getKhoa() { return khoa;}
+
 }

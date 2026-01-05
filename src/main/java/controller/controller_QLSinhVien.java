@@ -6,7 +6,7 @@ package controller;
 
 /**
  *
- * @author thedu
+ * @author Dvtt
  */
 import model.ConnectDB;
 import view.view_QLSinhVien;
@@ -17,7 +17,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.sql.*;
+
 public class controller_QLSinhVien {
+
     private view_QLSinhVien v;
 
     public controller_QLSinhVien(view_QLSinhVien v) {

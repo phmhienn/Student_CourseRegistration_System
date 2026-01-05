@@ -128,8 +128,6 @@ public class view_QLdangky extends JFrame {
 
         return p;
     }
-
-
     private void setReadonly(JTextField txt) {
         txt.setEditable(false);
         txt.setBackground(Color.WHITE);

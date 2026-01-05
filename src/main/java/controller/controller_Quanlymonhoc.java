@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.File;
@@ -16,13 +15,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import view.view_Quanlymonhoc;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-/**
- *
- * @author Dvtt
- */
 public class controller_Quanlymonhoc {
+
     private final view_Quanlymonhoc v;
 
     public controller_Quanlymonhoc(view_Quanlymonhoc v) {

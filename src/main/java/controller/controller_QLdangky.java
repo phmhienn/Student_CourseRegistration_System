@@ -493,6 +493,5 @@ public class controller_QLdangky {
             JOptionPane.showMessageDialog(view, "Lỗi load lớp học phần đang mở");
         }
     }
-
-
 }
+

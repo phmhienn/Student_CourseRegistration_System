@@ -34,7 +34,7 @@ public class model_ThongKe {
     }
 
     // load combobox học kỳ (ma_hoc_ky)
-    public List<String> getDsMaHocKy() throws SQLException {
+    public List<String> getDsMaHocKy() throws SQLException, Exception {
         List<String> list = new ArrayList<>();
         String sql = "SELECT ma_hoc_ky FROM HocKy ORDER BY nam_hoc, ma_hoc_ky";
         try (Connection c = ConnectDB.getConnection();
@@ -46,7 +46,7 @@ public class model_ThongKe {
     }
 
     // lấy năm học theo học kỳ
-    public String getNamHocByHocKy(String maHocKy) throws SQLException {
+    public String getNamHocByHocKy(String maHocKy) throws SQLException, Exception {
         String sql = "SELECT nam_hoc FROM HocKy WHERE ma_hoc_ky = ?";
         try (Connection c = ConnectDB.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -58,7 +58,7 @@ public class model_ThongKe {
     }
 
     // tổng lượt đăng ký trong học kỳ (lọc "Đã đăng ký")
-    public int getTongLuotDangKy(String maHocKy) throws SQLException {
+    public int getTongLuotDangKy(String maHocKy) throws SQLException, Exception {
         String sql = """
             SELECT COUNT(*) AS tong
             FROM DangKyTinChi dk
@@ -76,7 +76,7 @@ public class model_ThongKe {
     }
 
     // thống kê số SV theo môn trong học kỳ (đếm DISTINCT SV)
-    public List<ThongKeMon> getThongKeTheoMon(String maHocKy) throws SQLException {
+    public List<ThongKeMon> getThongKeTheoMon(String maHocKy) throws SQLException, Exception {
         List<ThongKeMon> list = new ArrayList<>();
 
         String sql = """

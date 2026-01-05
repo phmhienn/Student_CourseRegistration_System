@@ -10,7 +10,9 @@ import view.view_Admin;
 import view.view_Dangnhap;
 
 public class controller_Dangnhap {
+
      private final view_Dangnhap view;
+
 
     public controller_Dangnhap(view_Dangnhap view) {
         this.view = view;
