@@ -165,11 +165,8 @@ public class controller_QLLopHocPhan {
         view.btnXoa.addActionListener(e -> xoa());
         view.btnLamMoi.addActionListener(e -> lamMoi());
         view.btnTim.addActionListener(e -> tim());
-
         view.btnQuayLai.addActionListener(e -> view.dispose());
-
         view.btnNhapExcel.addActionListener(e ->nhapExcel());
-
         view.btnXuatExcel.addActionListener(e ->xuatExcel());
     }
 
