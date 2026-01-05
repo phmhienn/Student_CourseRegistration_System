@@ -14,12 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import model.ConnectDB;
 import model.model_Admin;
-import view.view_Admin;
-import view.view_Dangnhap;
-import view.view_QLNguoiDung;
-import view.view_QLSinhVien;
-import view.view_QLdangky;
-import view.view_Quanlymonhoc;
+import view.*;
 
 /**
  *
@@ -38,9 +33,13 @@ public class controller_Admin {
         v.btnDangXuat.addActionListener(e -> dangXuat());
         v.btnQuanLyNguoiDung.addActionListener(e-> moQLNguoiDung());
         v.btnQuanLyDangKyTinChi.addActionListener(e -> moQLdangky());
-        
+        v.btnQLLopHocPhan.addActionListener(e -> moQLLopHocPhan());
     }
-
+    private void moQLLopHocPhan(){
+        view_QuanLyLopHocPhan man = new view_QuanLyLopHocPhan();
+        new controller_QLLopHocPhan(man, v);
+        man.setVisible(true);
+    }
     private void moQuanlymonhoc() {
         view_Quanlymonhoc fm = new view_Quanlymonhoc();
         new controller_Quanlymonhoc(fm);
