@@ -79,7 +79,7 @@ public class controller_Quanlymonhoc {
 
         try (Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
-
+            
             st.executeUpdate(sql);
             loadTable();
             lamMoi();

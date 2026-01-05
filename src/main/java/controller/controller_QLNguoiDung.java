@@ -200,15 +200,22 @@ public class controller_QLNguoiDung {
              Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
 
-            Sheet s = wb.getSheetAt(0);
-            for (int i = 1; i <= s.getLastRowNum(); i++) {
-                Row r = s.getRow(i);
+            Sheet sheet = wb.getSheetAt(0);
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row r = sheet.getRow(i);
                 if (r == null) continue;
 
-                String u = r.getCell(1).getStringCellValue();
-                String p = r.getCell(2).getStringCellValue();
-                String h = r.getCell(3).getStringCellValue();
-                int t = (int) r.getCell(4).getNumericCellValue();
+                String u = r.getCell(1) == null ? "" : r.getCell(1).toString().trim();
+                String p = r.getCell(2) == null ? "" : r.getCell(2).toString().trim();
+                String h = r.getCell(3) == null ? "" : r.getCell(3).toString().trim();
+
+                int t = 1; // mặc định hoạt động
+                if (r.getCell(4) != null) {
+                    t = (int) Double.parseDouble(r.getCell(4).toString());
+                }
+
+                if (u.isEmpty() || p.isEmpty()) continue;
 
                 String sql =
                     "IF EXISTS (SELECT 1 FROM Admin WHERE username='" + u + "') " +
@@ -220,11 +227,16 @@ public class controller_QLNguoiDung {
 
                 st.executeUpdate(sql);
             }
+
             JOptionPane.showMessageDialog(v, "Nhập Excel thành công!");
             loadTable("");
             v.clearForm();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(v, e.getMessage());
-        }
     }
+
 }
+
+}
+
