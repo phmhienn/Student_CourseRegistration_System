@@ -26,10 +26,10 @@ public class controller_QLdangky {
         loadLop();
         loadHocKy();
         loadBang();
-         
+
         view.cbHocKy.addActionListener(e -> {
-        loadPhongHoc();
-        loadBang();
+            loadPhongHoc();
+            loadBang();
         });
         view.cbPhongHoc.addActionListener(e -> loadLichHocTheoPhong());
 
@@ -47,11 +47,11 @@ public class controller_QLdangky {
         });
 
         view.txtMaMon.getDocument().addDocumentListener(
-            new javax.swing.event.DocumentListener() {
-                public void insertUpdate(javax.swing.event.DocumentEvent e) { loadTheoMa(); }
-                public void removeUpdate(javax.swing.event.DocumentEvent e) { loadTheoMa(); }
-                public void changedUpdate(javax.swing.event.DocumentEvent e) { loadTheoMa(); }
-            }
+                new javax.swing.event.DocumentListener() {
+                    public void insertUpdate(javax.swing.event.DocumentEvent e) { loadTheoMa(); }
+                    public void removeUpdate(javax.swing.event.DocumentEvent e) { loadTheoMa(); }
+                    public void changedUpdate(javax.swing.event.DocumentEvent e) { loadTheoMa(); }
+                }
         );
     }
 
@@ -124,8 +124,8 @@ public class controller_QLdangky {
         view.cbLichHoc.removeAllItems();
 
         if (view.cbPhongHoc.getSelectedItem() == null ||
-            view.cbHocKy.getSelectedItem() == null ||
-            view.txtMaMon.getText().isEmpty()) return;
+                view.cbHocKy.getSelectedItem() == null ||
+                view.txtMaMon.getText().isEmpty()) return;
 
         String phong = view.cbPhongHoc.getSelectedItem().toString();
         String maHK = view.cbHocKy.getSelectedItem().toString();
@@ -158,7 +158,7 @@ public class controller_QLdangky {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 view.cbLichHoc.addItem(
-                    rs.getString("thu") + " - " + rs.getString("ca_hoc")
+                        rs.getString("thu") + " - " + rs.getString("ca_hoc")
                 );
             }
         } catch (Exception e) {
@@ -170,7 +170,7 @@ public class controller_QLdangky {
         view.cbPhongHoc.removeAllItems();
 
         if (view.txtMaMon.getText().isEmpty() ||
-            view.cbHocKy.getSelectedItem() == null) return;
+                view.cbHocKy.getSelectedItem() == null) return;
 
         String maMon = view.txtMaMon.getText().trim();
         String maHK = view.cbHocKy.getSelectedItem().toString();
@@ -183,7 +183,7 @@ public class controller_QLdangky {
         """;
 
         try (Connection con = ConnectDB.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, maMon);
             ps.setString(2, maHK);
@@ -196,7 +196,7 @@ public class controller_QLdangky {
             e.printStackTrace();
         }
     }
-    
+
     private void dayDuLieuLenForm() {
         int row = view.tblDangKy.getSelectedRow();
         if (row == -1) return;
@@ -228,7 +228,7 @@ public class controller_QLdangky {
         """;
 
         try (Connection con = ConnectDB.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, lop);
             ps.setString(2, maMon);
@@ -244,7 +244,7 @@ public class controller_QLdangky {
         }
         return false;
     }
-    
+
     private String getMaLHP() throws Exception {
         String maMon = view.txtMaMon.getText();
         String maHK = view.cbHocKy.getSelectedItem().toString();
@@ -282,26 +282,26 @@ public class controller_QLdangky {
 
     private void dangKy() {
         if (view.cbLop.getSelectedItem() == null ||
-            view.cbLichHoc.getSelectedItem() == null ||
-            view.cbPhongHoc.getSelectedItem() == null) {
+                view.cbLichHoc.getSelectedItem() == null ||
+                view.cbPhongHoc.getSelectedItem() == null) {
 
             JOptionPane.showMessageDialog(view, "Chọn đủ thông tin");
             return;
         }
-        
+
         String lop  = view.cbLop.getSelectedItem().toString();
         String maHK = view.cbHocKy.getSelectedItem().toString();
         String maMon = view.txtMaMon.getText().trim();
-        
+
         if (daDangKyMon(lop, maMon, maHK)) {
-        JOptionPane.showMessageDialog(
-            view,
-            "❌ Lớp " + lop + " đã đăng ký môn " + maMon + " trong học kỳ này",
-            "Trùng môn học",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
+            JOptionPane.showMessageDialog(
+                    view,
+                    "❌ Lớp " + lop + " đã đăng ký môn " + maMon + " trong học kỳ này",
+                    "Trùng môn học",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
 
         try {
             String maLHP = getMaLHP();
@@ -332,9 +332,9 @@ public class controller_QLdangky {
         }
     }
 
-        private void sua() {
-            int row = view.tblDangKy.getSelectedRow();
-            if (row == -1) {
+    private void sua() {
+        int row = view.tblDangKy.getSelectedRow();
+        if (row == -1) {
             JOptionPane.showMessageDialog(view, "Chọn môn cần sửa");
             return;
         }
@@ -349,13 +349,13 @@ public class controller_QLdangky {
             String thu = lich.split(" - ")[0];
             String ca  = lich.split(" - ")[1];
 
-        
+
             if (biTrungPhongCa(phong, thu, ca, maHK)) {
                 JOptionPane.showMessageDialog(
-                 view,
-                    "❌ Phòng " + phong + " đã bị trùng ca " + thu + " - " + ca,
-                    "Lỗi trùng lịch",
-                    JOptionPane.ERROR_MESSAGE
+                        view,
+                        "❌ Phòng " + phong + " đã bị trùng ca " + thu + " - " + ca,
+                        "Lỗi trùng lịch",
+                        JOptionPane.ERROR_MESSAGE
                 );
                 return;
             }
@@ -373,7 +373,7 @@ public class controller_QLdangky {
             """;
 
             try (Connection con = ConnectDB.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+                 PreparedStatement ps = con.prepareStatement(sql)) {
 
                 ps.setString(1, maLHP);
                 ps.setString(2, lop);
@@ -426,7 +426,7 @@ public class controller_QLdangky {
         model.setRowCount(0);
 
         if (view.cbLop.getSelectedItem() == null ||
-            view.cbHocKy.getSelectedItem() == null) {
+                view.cbHocKy.getSelectedItem() == null) {
 
             JOptionPane.showMessageDialog(view, "Chọn lớp và học kỳ");
             return;
@@ -471,13 +471,13 @@ public class controller_QLdangky {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 model.addRow(new Object[]{
-                    rs.getString("ma_mon"),
-                    rs.getString("ten_mon"),
-                    rs.getInt("so_tin_chi"),
-                    rs.getString("lop"),
-                    rs.getString("lich_hoc"),
-                    rs.getString("phong_hoc"),
-                    rs.getString("ma_hoc_ky")
+                        rs.getString("ma_mon"),
+                        rs.getString("ten_mon"),
+                        rs.getInt("so_tin_chi"),
+                        rs.getString("lop"),
+                        rs.getString("lich_hoc"),
+                        rs.getString("phong_hoc"),
+                        rs.getString("ma_hoc_ky")
                 });
             }
         } catch (Exception e) {
@@ -490,7 +490,7 @@ public class controller_QLdangky {
         model.setRowCount(0);
 
         if (view.cbLop.getSelectedItem() == null ||
-            view.cbHocKy.getSelectedItem() == null) return;
+                view.cbHocKy.getSelectedItem() == null) return;
 
         String lop = view.cbLop.getSelectedItem().toString();
         String maHK = view.cbHocKy.getSelectedItem().toString();
@@ -523,23 +523,23 @@ public class controller_QLdangky {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 model.addRow(new Object[]{
-                    rs.getString("ma_mon"),
-                    rs.getString("ten_mon"),
-                    rs.getInt("so_tin_chi"),
-                    rs.getString("lop"),
-                    rs.getString("lich_hoc"),
-                    rs.getString("phong_hoc"),
-                    rs.getString("ma_hoc_ky")
+                        rs.getString("ma_mon"),
+                        rs.getString("ten_mon"),
+                        rs.getInt("so_tin_chi"),
+                        rs.getString("lop"),
+                        rs.getString("lich_hoc"),
+                        rs.getString("phong_hoc"),
+                        rs.getString("ma_hoc_ky")
                 });
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-   private boolean biTrungPhongCa(String phong, String thu, String ca, String maHK) {
 
-    String sql = """
+    private boolean biTrungPhongCa(String phong, String thu, String ca, String maHK) {
+
+        String sql = """
         SELECT COUNT(*)
         FROM DangKyTinChi dk
         JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
@@ -549,22 +549,22 @@ public class controller_QLdangky {
           AND lhp.ma_hoc_ky = ?
     """;
 
-    try (Connection con = ConnectDB.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-        ps.setString(1, phong);
-        ps.setString(2, thu);
-        ps.setString(3, ca);
-        ps.setString(4, maHK);
+            ps.setString(1, phong);
+            ps.setString(2, thu);
+            ps.setString(3, ca);
+            ps.setString(4, maHK);
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-    } catch (Exception e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
 }

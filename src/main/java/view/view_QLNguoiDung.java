@@ -7,7 +7,11 @@ package view;
 /**
  *
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @author thedu
+=======
+ * @author HUY
+>>>>>>> origin/nhuy
 =======
  * @author HUY
 >>>>>>> origin/nhuy

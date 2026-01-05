@@ -6,6 +6,7 @@ package model;
 
 public class model_Admin {
 
+
     private int adminId;
     private String username;
     private String hoTen;
@@ -34,5 +35,3 @@ public class model_Admin {
         this.hoTen = hoTen;
     }
 }
-
-

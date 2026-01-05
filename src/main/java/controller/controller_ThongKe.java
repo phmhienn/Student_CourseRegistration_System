@@ -138,44 +138,96 @@ public class controller_ThongKe {
     }
 
     private void writeExcel(Path filePath) throws Exception {
-        try (Workbook wb = new XSSFWorkbook()) {
-            Sheet sheet = wb.createSheet("ThongKe_" + cacheHocKy);
+    try (Workbook wb = new XSSFWorkbook()) {
+        Sheet sheet = wb.createSheet("ThongKe_" + cacheHocKy);
 
-            int r = 0;
+        // ===== Styles =====
+        CellStyle headerStyle = wb.createCellStyle();
+        Font headerFont = wb.createFont();
+        headerFont.setBold(true);
+        headerStyle.setFont(headerFont);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
 
-            Row title = sheet.createRow(r++);
-            title.createCell(0).setCellValue("THỐNG KÊ ĐĂNG KÝ TÍN CHỈ");
+        CellStyle textStyle = wb.createCellStyle();
+        textStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        textStyle.setAlignment(HorizontalAlignment.LEFT);
+        textStyle.setBorderTop(BorderStyle.THIN);
+        textStyle.setBorderBottom(BorderStyle.THIN);
+        textStyle.setBorderLeft(BorderStyle.THIN);
+        textStyle.setBorderRight(BorderStyle.THIN);
 
-            Row info1 = sheet.createRow(r++);
-            info1.createCell(0).setCellValue("Học kỳ");
-            info1.createCell(1).setCellValue(cacheHocKy);
+        CellStyle numberStyle = wb.createCellStyle();
+        numberStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        numberStyle.setAlignment(HorizontalAlignment.CENTER);
+        numberStyle.setBorderTop(BorderStyle.THIN);
+        numberStyle.setBorderBottom(BorderStyle.THIN);
+        numberStyle.setBorderLeft(BorderStyle.THIN);
+        numberStyle.setBorderRight(BorderStyle.THIN);
 
-            Row info2 = sheet.createRow(r++);
-            info2.createCell(0).setCellValue("Năm học");
-            info2.createCell(1).setCellValue(cacheNamHoc == null ? "" : cacheNamHoc);
+        int r = 0;
 
-            Row info3 = sheet.createRow(r++);
-            info3.createCell(0).setCellValue("Tổng lượt đăng ký");
-            info3.createCell(1).setCellValue(cacheTong);
+        // ===== Header row =====
+        Row header = sheet.createRow(r++);
+        header.setHeightInPoints(20);
 
-            r++; // dòng trống
+        String[] cols = {"Học kỳ", "Năm học", "Tổng lượt đăng ký", "Môn học", "Số SV"};
+        for (int c = 0; c < cols.length; c++) {
+            Cell cell = header.createCell(c);
+            cell.setCellValue(cols[c]);
+            cell.setCellStyle(headerStyle);
+        }
 
-            Row header = sheet.createRow(r++);
-            header.createCell(0).setCellValue("Môn học");
-            header.createCell(1).setCellValue("Số SV");
+        // ===== Data rows =====
+        // Mỗi môn là 1 dòng, nhưng Học kỳ/Năm học/Tổng lượt giống nhau
+        if (cacheList == null || cacheList.isEmpty()) {
+            Row row = sheet.createRow(r++);
+            Cell c0 = row.createCell(0); c0.setCellValue(cacheHocKy); c0.setCellStyle(textStyle);
+            Cell c1 = row.createCell(1); c1.setCellValue(cacheNamHoc == null ? "" : cacheNamHoc); c1.setCellStyle(textStyle);
+            Cell c2 = row.createCell(2); c2.setCellValue(cacheTong); c2.setCellStyle(numberStyle);
+            Cell c3 = row.createCell(3); c3.setCellValue(""); c3.setCellStyle(textStyle);
+            Cell c4 = row.createCell(4); c4.setCellValue(0); c4.setCellStyle(numberStyle);
+        } else {
+            for (ThongKeMon tk : cacheList) {
+                Row row = sheet.createRow(r++);
 
-            for (ThongKeMon row : cacheList) {
-                Row rr = sheet.createRow(r++);
-                rr.createCell(0).setCellValue(row.tenMon);
-                rr.createCell(1).setCellValue(row.soSv);
-            }
+                Cell c0 = row.createCell(0); // Học kỳ
+                c0.setCellValue(cacheHocKy);
+                c0.setCellStyle(textStyle);
 
-            sheet.autoSizeColumn(0);
-            sheet.autoSizeColumn(1);
+                Cell c1 = row.createCell(1); // Năm học
+                c1.setCellValue(cacheNamHoc == null ? "" : cacheNamHoc);
+                c1.setCellStyle(textStyle);
 
-            try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-                wb.write(fos);
+                Cell c2 = row.createCell(2); // Tổng lượt đăng ký
+                c2.setCellValue(cacheTong);
+                c2.setCellStyle(numberStyle);
+
+                Cell c3 = row.createCell(3); // Môn học
+                c3.setCellValue(tk.tenMon);
+                c3.setCellStyle(textStyle);
+
+                Cell c4 = row.createCell(4); // Số SV
+                c4.setCellValue(tk.soSv);
+                c4.setCellStyle(numberStyle);
             }
         }
+
+        // ===== Auto size columns =====
+        for (int c = 0; c < cols.length; c++) sheet.autoSizeColumn(c);
+
+        // Freeze header
+        sheet.createFreezePane(0, 1);
+
+        try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
+            wb.write(fos);
+        }
     }
+}
 }

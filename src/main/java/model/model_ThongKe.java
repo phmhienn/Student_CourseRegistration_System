@@ -64,7 +64,11 @@ public class model_ThongKe {
             FROM DangKyTinChi dk
             JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
             WHERE lhp.ma_hoc_ky = ?
+<<<<<<< HEAD
               AND dk.trang_thai = N'Đã đăng ký'
+=======
+              AND dk.trang_thai = N'Đ? đăng k?'
+>>>>>>> origin/nhuy
         """;
         try (Connection c = ConnectDB.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -85,7 +89,11 @@ public class model_ThongKe {
             JOIN LopHocPhan lhp ON dk.ma_lhp = lhp.ma_lhp
             JOIN MonHoc mh ON lhp.ma_mon = mh.ma_mon
             WHERE lhp.ma_hoc_ky = ?
+<<<<<<< HEAD
               AND dk.trang_thai = N'Đã đăng ký'
+=======
+              AND dk.trang_thai = N'Đ? đăng k?'
+>>>>>>> origin/nhuy
             GROUP BY mh.ten_mon
             ORDER BY so_sv DESC
         """;

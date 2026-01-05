@@ -15,11 +15,6 @@ import javax.swing.event.ListSelectionListener;
 import model.ConnectDB;
 import model.model_Admin;
 import view.*;
-import view.view_Admin;
-import view.view_Dangnhap;
-import view.view_QLNguoiDung;
-import view.view_QLSinhVien;
-import view.view_Quanlymonhoc;
 
 /**
  *
@@ -32,37 +27,48 @@ public class controller_Admin {
     public controller_Admin(view_Admin v,model_Admin admin) {
         this.v = v;
         this.admin = admin;
-       
+
         v.btnQLSinhVien.addActionListener(e -> moQLSinhVien());
         v.btnQuanLyMonHoc.addActionListener(e -> moQuanlymonhoc());
         v.btnDangXuat.addActionListener(e -> dangXuat());
         v.btnQuanLyNguoiDung.addActionListener(e-> moQLNguoiDung());
         v.btnQuanLyDangKyTinChi.addActionListener(e -> moQLdangky());
         v.btnQLLopHocPhan.addActionListener(e -> moQLLopHocPhan());
+        v.btnQLGiangVien.addActionListener(e -> moQLGiangVien());
+        v.btnThongKe.addActionListener(e -> moThongKe());
     }
     private void moQLLopHocPhan(){
         view_QuanLyLopHocPhan man = new view_QuanLyLopHocPhan();
         new controller_QLLopHocPhan(man, v);
         man.setVisible(true);
     }
+    private void moQLGiangVien(){
+        view_QLGiangVien v = new view_QLGiangVien();
+        new controller_QLGiangVien(v);
+        v.setVisible(true);
+    }
     private void moQuanlymonhoc() {
         view_Quanlymonhoc fm = new view_Quanlymonhoc();
         new controller_Quanlymonhoc(fm);
         fm.setVisible(true);
     }
-    
+
     private void moQLSinhVien() {
         view_QLSinhVien man = new view_QLSinhVien();
         new controller_QLSinhVien(man);
         man.setVisible(true);
     }
-    
+
     private void moQLNguoiDung() {
         view_QLNguoiDung man = new view_QLNguoiDung();
         new controller_QLNguoiDung(man);
         man.setVisible(true);
     }
-
+    private void moThongKe() {
+        view_ThongKe tk = new view_ThongKe();
+        new controller_ThongKe(tk);
+        tk.setVisible(true);
+    }
     private void moQLdangky(){
         view_QLdangky man =new view_QLdangky();
         new controller_QLdangky(man);
@@ -76,4 +82,3 @@ public class controller_Admin {
         man.setVisible(true);
     }
 }
-    

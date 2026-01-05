@@ -16,8 +16,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import view.view_Quanlymonhoc;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+/**
+ *
+ * @author Dvtt
+ */
 public class controller_Quanlymonhoc {
-
     private final view_Quanlymonhoc v;
 
     public controller_Quanlymonhoc(view_Quanlymonhoc v) {
@@ -192,7 +197,7 @@ public class controller_Quanlymonhoc {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
-                String ma = row.getCell(0).toString().trim();
+                String ma  = row.getCell(0).toString().trim();
                 String ten = row.getCell(1).toString().trim();
 
                 // số tín chỉ có thể đọc ra kiểu 3.0 -> ép về int

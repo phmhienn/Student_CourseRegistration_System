@@ -229,3 +229,4 @@ public class view_ThongKe extends JFrame {
     public void clearTable() { model.setRowCount(0); }
     public void addRow(String mon, int soSv) { model.addRow(new Object[]{mon, soSv}); }
 }
+

@@ -18,7 +18,6 @@ public class ConnectDB {
                     "databaseName=QLTC;" +
                     "encrypt=false;" +
                     "trustServerCertificate=true;";
-
     private static String user = "sa";
     private static String pass = "123456";
 

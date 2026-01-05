@@ -6,7 +6,6 @@ package controller;
 
 /**
  *
-<<<<<<< HEAD
  * @author thedu
  */
 import model.ConnectDB;
@@ -19,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.sql.*;
 public class controller_QLSinhVien {
-     private view_QLSinhVien v;
+    private view_QLSinhVien v;
 
     public controller_QLSinhVien(view_QLSinhVien v) {
         this.v = v;
-        
+
         loadTable("");
         addEvents();
     }
@@ -60,9 +59,9 @@ public class controller_QLSinhVien {
     }
 
     private void addEvents() {
-        
+
         v.btnQuayLai.addActionListener(e -> v.dispose());
-        
+
         v.btnThem.addActionListener(e -> {
             try (Connection c = ConnectDB.getConnection()) {
                 PreparedStatement ps = c.prepareStatement(

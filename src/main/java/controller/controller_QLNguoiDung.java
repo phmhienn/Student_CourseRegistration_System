@@ -7,7 +7,11 @@ package controller;
 /**
  *
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @author thedu
+=======
+ * @author HUY
+>>>>>>> origin/nhuy
 =======
  * @author HUY
 >>>>>>> origin/nhuy
@@ -193,7 +197,7 @@ public class controller_QLNguoiDung {
                 }
             }
             wb.write(new FileOutputStream(f));
-            JOptionPane.showMessageDialog(v, "Nhập Excel thành công!");
+            JOptionPane.showMessageDialog(v, "Xuất Excel thành công!");
             loadTable("");
             v.clearForm();
         } catch (Exception e) {
@@ -240,4 +244,3 @@ public class controller_QLNguoiDung {
         }
     }
 }
-
