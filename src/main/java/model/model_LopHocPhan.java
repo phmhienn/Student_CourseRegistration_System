@@ -1,6 +1,6 @@
 package model;
 
-public class LopHocPhan {
+public class model_LopHocPhan {
 
     // ====== Thuộc tính ======
     private String maLhp;          // mã lớp học phần
@@ -15,13 +15,13 @@ public class LopHocPhan {
     private String trangThai;      // trạng thái: Đang mở / Đã đủ / Đã khóa
 
     // ====== Constructor không tham số ======
-    public LopHocPhan() {
+    public model_LopHocPhan() {
     }
 
     // ====== Constructor đầy đủ ======
-    public LopHocPhan(String maLhp, String maMon, String tenMon,
-                      String maHocKy, String giangVien, int soLuongToiDa,
-                      String thu, String caHoc, String phongHoc, String trangThai) {
+    public model_LopHocPhan(String maLhp, String maMon, String tenMon,
+                            String maHocKy, String giangVien, int soLuongToiDa,
+                            String thu, String caHoc, String phongHoc, String trangThai) {
         this.maLhp = maLhp;
         this.maMon = maMon;
         this.tenMon = tenMon;

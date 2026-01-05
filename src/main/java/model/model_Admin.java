@@ -4,18 +4,9 @@
  */
 package model;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-/**
- *
- * @author Dvtt
- */
 public class model_Admin {
-     private int adminId;
+
+    private int adminId;
     private String username;
     private String hoTen;
 
@@ -43,3 +34,5 @@ public class model_Admin {
         this.hoTen = hoTen;
     }
 }
+
+

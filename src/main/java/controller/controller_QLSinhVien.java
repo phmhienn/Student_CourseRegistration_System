@@ -6,6 +6,7 @@ package controller;
 
 /**
  *
+<<<<<<< HEAD
  * @author thedu
  */
 import model.ConnectDB;

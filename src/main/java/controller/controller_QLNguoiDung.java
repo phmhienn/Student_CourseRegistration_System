@@ -6,7 +6,11 @@ package controller;
 
 /**
  *
+<<<<<<< HEAD
  * @author thedu
+=======
+ * @author HUY
+>>>>>>> origin/nhuy
  */
 import java.io.File;
 import java.io.FileInputStream;
@@ -236,3 +240,4 @@ public class controller_QLNguoiDung {
         }
     }
 }
+

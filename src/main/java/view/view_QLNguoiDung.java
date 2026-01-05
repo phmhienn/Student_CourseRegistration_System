@@ -6,7 +6,11 @@ package view;
 
 /**
  *
+<<<<<<< HEAD
  * @author thedu
+=======
+ * @author HUY
+>>>>>>> origin/nhuy
  */
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -17,13 +21,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-public class view_QLNguoiDung extends JFrame{
+
+public class view_QLNguoiDung extends JFrame {
+
+    // ===== INPUT =====
     public JTextField txtUsername = new JTextField();
     public JTextField txtPassword = new JTextField();
     public JTextField txtHoTen = new JTextField();
     public JComboBox<String> cbTrangThai = new JComboBox<>(new String[]{"Hoạt động", "Khoá"});
     public JTextField txtTimKiem = new JTextField();
-
     // ===== BUTTONS =====
     public JButton btnThem = new JButton("Thêm");
     public JButton btnSua = new JButton("Sửa");

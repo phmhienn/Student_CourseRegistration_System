@@ -4,12 +4,19 @@
  */
 package model;
 
+
 import java.sql.Date;
 
 /**
  *
  * @author thedu
  */
+
+/**
+ *
+ * @author HUY
+ **/
+
 public class model_SinhVien {
     private String maSV;
     private String hoTen;
@@ -35,6 +42,6 @@ public class model_SinhVien {
     public Date getNgaySinh() { return ngaySinh; }
     public String getGioiTinh() { return gioiTinh; }
     public String getLop() { return lop; }
-    public String getKhoa() { return khoa; 
-    }
+    public String getKhoa() { return khoa;}
+
 }

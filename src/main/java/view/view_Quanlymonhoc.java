@@ -9,14 +9,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-
 public class view_Quanlymonhoc extends JFrame {
 
     public JTextField txtMaMon = new JTextField();
     public JTextField txtTenMon = new JTextField();
     public JTextField txtTinChi = new JTextField();
- 
-
     public JTextField txtTim = new JTextField();
 
     public JButton btnThem = new JButton("Thêm");
@@ -28,11 +25,10 @@ public class view_Quanlymonhoc extends JFrame {
     public JButton btnXuatExcel = new JButton("Xuất Excel");
     public JButton btnNhapExcel = new JButton("Nhập Excel");
 
-    // ✅ nút quay lại góc phải
     public JButton btnQuayLai = new JButton("Quay lại");
 
     public DefaultTableModel dtm = new DefaultTableModel(
-            new String[]{"Mã môn", "Tên môn", "Tín chỉ", "Mã khoa"}, 0
+            new String[]{"Mã môn", "Tên môn", "Số tín chỉ"}, 0
     ) {
         @Override public boolean isCellEditable(int row, int column) { return false; }
     };
@@ -40,7 +36,7 @@ public class view_Quanlymonhoc extends JFrame {
 
     public view_Quanlymonhoc() {
         setTitle("Quản lý môn học");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(1050, 650);
         setMinimumSize(new Dimension(980, 560));
         setLocationRelativeTo(null);
@@ -52,13 +48,11 @@ public class view_Quanlymonhoc extends JFrame {
         Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
 
-        // ===== ROOT =====
         JPanel root = new JPanel(new BorderLayout(12, 12));
         root.setBorder(new EmptyBorder(12, 12, 12, 12));
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
-        // ===== TOP BAR (title + quay lai) =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
@@ -68,30 +62,24 @@ public class view_Quanlymonhoc extends JFrame {
 
         JPanel rightTop = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightTop.setOpaque(false);
-
         styleNeutral(btnQuayLai);
         rightTop.add(btnQuayLai);
 
         topBar.add(lblTitle, BorderLayout.CENTER);
         topBar.add(rightTop, BorderLayout.EAST);
 
-        // ===== INPUT WRAP =====
         JPanel inputWrap = new JPanel();
         inputWrap.setBackground(Color.WHITE);
         inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin môn học"));
         inputWrap.setLayout(new BoxLayout(inputWrap, BoxLayout.Y_AXIS));
 
-        // --- ROW 1: 4 ô cùng 1 hàng ---
-        JPanel row1 = new JPanel(new GridLayout(1, 4, 18, 0));
+        JPanel row1 = new JPanel(new GridLayout(1, 3, 18, 0));
         row1.setOpaque(false);
         row1.setBorder(new EmptyBorder(10, 16, 6, 16));
-
         row1.add(fieldBox("Mã môn", txtMaMon, fLabel, fInput));
         row1.add(fieldBox("Tên môn", txtTenMon, fLabel, fInput));
-        row1.add(fieldBox("Tín chỉ", txtTinChi, fLabel, fInput));
-        
+        row1.add(fieldBox("Số tín chỉ", txtTinChi, fLabel, fInput));
 
-        // --- ROW 2: CRUD + search + excel ---
         JPanel row2 = new JPanel(new BorderLayout());
         row2.setOpaque(false);
         row2.setBorder(new EmptyBorder(8, 16, 12, 16));
@@ -109,7 +97,7 @@ public class view_Quanlymonhoc extends JFrame {
         lblKey.setFont(fLabel);
 
         txtTim.setFont(fInput);
-        txtTim.setPreferredSize(new Dimension(200, 36));
+        txtTim.setPreferredSize(new Dimension(195, 36));
         txtTim.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200)),
                 new EmptyBorder(6, 8, 6, 8)
@@ -119,7 +107,7 @@ public class view_Quanlymonhoc extends JFrame {
         left.add(btnSua);
         left.add(btnXoa);
         left.add(btnLamMoi);
-        left.add(Box.createHorizontalStrut(16));
+        left.add(Box.createHorizontalStrut(18));
         left.add(lblKey);
         left.add(txtTim);
         left.add(btnTim);
@@ -139,7 +127,6 @@ public class view_Quanlymonhoc extends JFrame {
         inputWrap.add(row1);
         inputWrap.add(row2);
 
-        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
         tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách môn học"));
@@ -158,12 +145,10 @@ public class view_Quanlymonhoc extends JFrame {
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
         tbl.getColumnModel().getColumn(2).setCellRenderer(center);
-        tbl.getColumnModel().getColumn(3).setCellRenderer(center);
 
-        tbl.getColumnModel().getColumn(0).setPreferredWidth(150);
-        tbl.getColumnModel().getColumn(1).setPreferredWidth(520);
-        tbl.getColumnModel().getColumn(2).setPreferredWidth(140);
-        tbl.getColumnModel().getColumn(3).setPreferredWidth(160);
+        tbl.getColumnModel().getColumn(0).setPreferredWidth(160);
+        tbl.getColumnModel().getColumn(1).setPreferredWidth(640);
+        tbl.getColumnModel().getColumn(2).setPreferredWidth(120);
 
         JScrollPane sp = new JScrollPane(tbl);
         sp.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -174,7 +159,6 @@ public class view_Quanlymonhoc extends JFrame {
         JPanel centerWrap = new JPanel();
         centerWrap.setLayout(new BoxLayout(centerWrap, BoxLayout.Y_AXIS));
         centerWrap.setOpaque(false);
-
         centerWrap.add(inputWrap);
         centerWrap.add(Box.createVerticalStrut(12));
         centerWrap.add(tableWrap);
@@ -206,33 +190,12 @@ public class view_Quanlymonhoc extends JFrame {
         return p;
     }
 
-    private JPanel comboBox(String label, JComboBox<?> cb, Font fLabel, Font fInput) {
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-
-        JLabel l = new JLabel(label, SwingConstants.CENTER);
-        l.setFont(fLabel);
-        l.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        cb.setFont(fInput);
-        cb.setPreferredSize(new Dimension(10, 36));
-        cb.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-
-        p.add(l);
-        p.add(Box.createVerticalStrut(6));
-        p.add(cb);
-        return p;
-    }
-
     private void stylePrimary(JButton b) {
         styleButton(b, new Color(45, 108, 223), Color.WHITE, new Color(30, 90, 200));
     }
-
     private void styleDanger(JButton b) {
         styleButton(b, new Color(210, 55, 75), Color.WHITE, new Color(185, 40, 60));
     }
-
     private void styleNeutral(JButton b) {
         styleButton(b, new Color(235, 235, 235), new Color(40, 40, 40), new Color(220, 220, 220));
     }
@@ -250,7 +213,7 @@ public class view_Quanlymonhoc extends JFrame {
         Color normal = bg;
         b.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) { b.setBackground(hover); }
-            @Override public void mouseExited(MouseEvent e) { b.setBackground(normal); }
+            @Override public void mouseExited(MouseEvent e)  { b.setBackground(normal); }
         });
     }
 }

@@ -15,6 +15,11 @@ import javax.swing.event.ListSelectionListener;
 import model.ConnectDB;
 import model.model_Admin;
 import view.*;
+import view.view_Admin;
+import view.view_Dangnhap;
+import view.view_QLNguoiDung;
+import view.view_QLSinhVien;
+import view.view_Quanlymonhoc;
 
 /**
  *
@@ -57,7 +62,7 @@ public class controller_Admin {
         new controller_QLNguoiDung(man);
         man.setVisible(true);
     }
-    
+
     private void moQLdangky(){
         view_QLdangky man =new view_QLdangky();
         new controller_QLdangky(man);
@@ -71,3 +76,4 @@ public class controller_Admin {
         man.setVisible(true);
     }
 }
+    

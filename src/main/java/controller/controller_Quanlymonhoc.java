@@ -16,13 +16,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import view.view_Quanlymonhoc;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-/**
- *
- * @author Dvtt
- */
 public class controller_Quanlymonhoc {
+
     private final view_Quanlymonhoc v;
 
     public controller_Quanlymonhoc(view_Quanlymonhoc v) {
@@ -53,9 +48,9 @@ public class controller_Quanlymonhoc {
 
             while (rs.next()) {
                 v.dtm.addRow(new Object[]{
-                    rs.getString(1),
-                    rs.getString(2),
-                    rs.getInt(3)
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getInt(3)
                 });
             }
         } catch (Exception e) {
@@ -80,8 +75,8 @@ public class controller_Quanlymonhoc {
         int tc = Integer.parseInt(v.txtTinChi.getText().trim());
 
         String sql =
-            "INSERT INTO MonHoc(ma_mon,ten_mon,so_tin_chi) VALUES(" +
-            "'" + ma + "',N'" + ten + "'," + tc + ")";
+                "INSERT INTO MonHoc(ma_mon,ten_mon,so_tin_chi) VALUES(" +
+                        "'" + ma + "',N'" + ten + "'," + tc + ")";
 
         try (Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
@@ -100,8 +95,8 @@ public class controller_Quanlymonhoc {
         int tc = Integer.parseInt(v.txtTinChi.getText().trim());
 
         String sql =
-            "UPDATE MonHoc SET ten_mon=N'" + ten + "', so_tin_chi=" + tc +
-            " WHERE ma_mon='" + ma + "'";
+                "UPDATE MonHoc SET ten_mon=N'" + ten + "', so_tin_chi=" + tc +
+                        " WHERE ma_mon='" + ma + "'";
 
         try (Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
@@ -128,7 +123,7 @@ public class controller_Quanlymonhoc {
             JOptionPane.showMessageDialog(v, e.getMessage());
         }
     }
-    
+
     private void xuatExcel() {
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Chọn nơi lưu Excel");
@@ -197,7 +192,7 @@ public class controller_Quanlymonhoc {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
-                String ma  = row.getCell(0).toString().trim();
+                String ma = row.getCell(0).toString().trim();
                 String ten = row.getCell(1).toString().trim();
 
                 // số tín chỉ có thể đọc ra kiểu 3.0 -> ép về int
@@ -207,11 +202,11 @@ public class controller_Quanlymonhoc {
 
                 // nếu trùng mã => update, chưa có => insert
                 String sql =
-                    "IF EXISTS (SELECT 1 FROM MonHoc WHERE ma_mon='" + ma + "') " +
-                    "UPDATE MonHoc SET ten_mon=N'" + ten + "', so_tin_chi=" + tc +
-                    " WHERE ma_mon='" + ma + "' " +
-                    "ELSE INSERT INTO MonHoc(ma_mon,ten_mon,so_tin_chi) VALUES(" +
-                    "'" + ma + "',N'" + ten + "'," + tc + ")";
+                        "IF EXISTS (SELECT 1 FROM MonHoc WHERE ma_mon='" + ma + "') " +
+                                "UPDATE MonHoc SET ten_mon=N'" + ten + "', so_tin_chi=" + tc +
+                                " WHERE ma_mon='" + ma + "' " +
+                                "ELSE INSERT INTO MonHoc(ma_mon,ten_mon,so_tin_chi) VALUES(" +
+                                "'" + ma + "',N'" + ten + "'," + tc + ")";
 
                 st.executeUpdate(sql);
             }
@@ -224,7 +219,7 @@ public class controller_Quanlymonhoc {
             JOptionPane.showMessageDialog(v, "Lỗi nhập Excel: " + e.getMessage());
         }
     }
-    
+
     private void lamMoi() {
         v.txtMaMon.setText("");
         v.txtTenMon.setText("");
