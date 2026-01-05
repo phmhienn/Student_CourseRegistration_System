@@ -32,8 +32,8 @@ public class controller_Admin {
         v.btnQuanLyMonHoc.addActionListener(e -> moQuanlymonhoc());
         v.btnDangXuat.addActionListener(e -> dangXuat());
         v.btnQuanLyNguoiDung.addActionListener(e-> moQLNguoiDung());
+        v.btnQLLopHocPhan.addActionListener(e ->moQLLopHocPhan());
         v.btnQuanLyDangKyTinChi.addActionListener(e -> moQLdangky());
-        v.btnQLLopHocPhan.addActionListener(e -> moQLLopHocPhan());
         v.btnQLGiangVien.addActionListener(e -> moQLGiangVien());
         v.btnThongKe.addActionListener(e -> moThongKe());
     }
@@ -42,11 +42,13 @@ public class controller_Admin {
         new controller_QLLopHocPhan(man, v);
         man.setVisible(true);
     }
+
     private void moQLGiangVien(){
         view_QLGiangVien v = new view_QLGiangVien();
         new controller_QLGiangVien(v);
         v.setVisible(true);
     }
+
     private void moQuanlymonhoc() {
         view_Quanlymonhoc fm = new view_Quanlymonhoc();
         new controller_Quanlymonhoc(fm);
@@ -64,11 +66,13 @@ public class controller_Admin {
         new controller_QLNguoiDung(man);
         man.setVisible(true);
     }
+
     private void moThongKe() {
         view_ThongKe tk = new view_ThongKe();
         new controller_ThongKe(tk);
         tk.setVisible(true);
     }
+
     private void moQLdangky(){
         view_QLdangky man =new view_QLdangky();
         new controller_QLdangky(man);
