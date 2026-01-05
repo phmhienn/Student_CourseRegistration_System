@@ -22,10 +22,13 @@ public class view_QuanLyLopHocPhan extends JFrame {
     public JComboBox<String> cboMonHoc = new JComboBox<>();
     public JComboBox<String> cboHocKy = new JComboBox<>();
     public JComboBox<String> cboThu = new JComboBox<>(new String[]{
-            "Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7","Chủ nhật"
+            "--Chọn thứ--","Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7","Chủ nhật"
     });
     public JComboBox<String> cboCaHoc = new JComboBox<>(new String[]{
-            "Ca 1","Ca 2","Ca 3","Ca 4","Ca 5","Ca 6","Ca 7","Ca 8","Ca 9","Ca 10","Ca 11","Ca 12"
+            "--Chọn ca học--","Ca 1","Ca 2","Ca 3","Ca 4","Ca 5","Ca 6","Ca 7","Ca 8","Ca 9","Ca 10","Ca 11","Ca 12"
+    });
+    public JComboBox<String> cboTrangThai = new JComboBox<>(new String[]{
+            "--Chọn trạng thái--","Đang mở","Chưa mở","Đã đủ","Đã khoá"
     });
 
     /* ===================== BUTTON ===================== */
@@ -42,7 +45,7 @@ public class view_QuanLyLopHocPhan extends JFrame {
     public DefaultTableModel dtm = new DefaultTableModel(
             new String[]{
                     "Mã LHP","Mã môn","Tên môn","Học kỳ",
-                    "Giảng viên","Số lượng","Thứ","Ca","Phòng"
+                    "Giảng viên","Số lượng","Thứ","Ca","Phòng","Trạng Thái"
             }, 0
     ) {
         @Override public boolean isCellEditable(int r, int c) { return false; }
@@ -117,7 +120,8 @@ public class view_QuanLyLopHocPhan extends JFrame {
         row2.add(comboBox("Ca học", cboCaHoc, fLabel, fInput));
         row2.add(Box.createHorizontalStrut(18));
         row2.add(fieldBox("Phòng", txtPhong, fLabel, fInput));
-
+        row2.add(Box.createHorizontalStrut(18));
+        row2.add(comboBox("Trạng thái", cboTrangThai, fLabel, fInput));
         // ROW 3 BUTTON
         JPanel row3 = new JPanel(new FlowLayout(FlowLayout.LEFT,10,0));
         row3.setOpaque(false);
