@@ -56,3 +56,4 @@ public class model_GiangVien {
     public boolean isTrangThai() { return trangThai; }
     public void setTrangThai(boolean trangThai) { this.trangThai = trangThai; }
 }
+

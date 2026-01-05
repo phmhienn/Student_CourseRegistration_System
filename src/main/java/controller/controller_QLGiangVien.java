@@ -247,7 +247,10 @@ public class controller_QLGiangVien {
                 boolean firstRowIsHeader = true;
 
                 for (Row r : sheet) {
-                    if (firstRowIsHeader) { firstRowIsHeader = false; continue; }
+                    if (firstRowIsHeader) {
+                        firstRowIsHeader = false;
+                        continue;
+                    }
                     if (r == null) continue;
 
                     String ma = getCellString(r.getCell(0));
@@ -300,4 +303,3 @@ public class controller_QLGiangVien {
         return cell.getStringCellValue().trim();
     }
 }
-

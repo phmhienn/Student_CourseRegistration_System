@@ -14,7 +14,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import model.ConnectDB;
 import model.model_Admin;
-import view.*;
+import view.view_Admin;
+import view.view_Dangnhap;
+import view.view_HocPhi;
+import view.view_QLGiangVien;
+import view.view_QLNguoiDung;
+import view.view_QLSinhVien;
+import view.view_QLdangky;
+import view.view_QuanLyLopHocPhan;
+import view.view_Quanlymonhoc;
+import view.view_ThongKe;
 
 /**
  *
@@ -32,21 +41,18 @@ public class controller_Admin {
         v.btnQuanLyMonHoc.addActionListener(e -> moQuanlymonhoc());
         v.btnDangXuat.addActionListener(e -> dangXuat());
         v.btnQuanLyNguoiDung.addActionListener(e-> moQLNguoiDung());
-        v.btnQLLopHocPhan.addActionListener(e ->moQLLopHocPhan());
+        v.btnThongKe.addActionListener(e -> moThongKe());
         v.btnQuanLyDangKyTinChi.addActionListener(e -> moQLdangky());
         v.btnQLGiangVien.addActionListener(e -> moQLGiangVien());
-        v.btnThongKe.addActionListener(e -> moThongKe());
+        v.btnQLLopHocPhan.addActionListener(e -> moQLLopHocPhan());
+        v.btnHocPhi.addActionListener(e->moHocPhi());
+
     }
+
     private void moQLLopHocPhan(){
         view_QuanLyLopHocPhan man = new view_QuanLyLopHocPhan();
         new controller_QLLopHocPhan(man, v);
         man.setVisible(true);
-    }
-
-    private void moQLGiangVien(){
-        view_QLGiangVien v = new view_QLGiangVien();
-        new controller_QLGiangVien(v);
-        v.setVisible(true);
     }
 
     private void moQuanlymonhoc() {
@@ -77,6 +83,18 @@ public class controller_Admin {
         view_QLdangky man =new view_QLdangky();
         new controller_QLdangky(man);
         man.setVisible(true);
+    }
+
+    private void moQLGiangVien(){
+        view_QLGiangVien v = new view_QLGiangVien();
+        new controller_QLGiangVien(v);
+        v.setVisible(true);
+    }
+
+    private void moHocPhi(){
+        view_HocPhi hp = new view_HocPhi();
+        new controller_HocPhi(hp);
+        hp.setVisible(true);
     }
 
     private void dangXuat() {

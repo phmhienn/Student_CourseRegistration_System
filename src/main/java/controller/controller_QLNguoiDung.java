@@ -42,10 +42,10 @@ public class controller_QLNguoiDung {
         v.model.setRowCount(0);
 
         String sql =
-            "SELECT admin_id, username, password, ho_ten, trang_thai " +
-            "FROM Admin " +
-            "WHERE username LIKE '%" + key + "%' OR ho_ten LIKE N'%" + key + "%' " +
-            "ORDER BY admin_id DESC";
+                "SELECT admin_id, username, password, ho_ten, trang_thai " +
+                        "FROM Admin " +
+                        "WHERE username LIKE '%" + key + "%' OR ho_ten LIKE N'%" + key + "%' " +
+                        "ORDER BY admin_id DESC";
 
         try (Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement();
@@ -53,11 +53,11 @@ public class controller_QLNguoiDung {
 
             while (rs.next()) {
                 v.model.addRow(new Object[]{
-                    rs.getInt("admin_id"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("ho_ten"),
-                    rs.getBoolean("trang_thai") ? "Hoạt động" : "Khoá"
+                        rs.getInt("admin_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("ho_ten"),
+                        rs.getBoolean("trang_thai") ? "Hoạt động" : "Khoá"
                 });
             }
         } catch (Exception e) {
@@ -90,8 +90,8 @@ public class controller_QLNguoiDung {
         }
 
         String sql =
-            "INSERT INTO Admin(username,password,ho_ten,trang_thai) VALUES (" +
-            "'" + user + "','" + pass + "',N'" + hoten + "'," + tt + ")";
+                "INSERT INTO Admin(username,password,ho_ten,trang_thai) VALUES (" +
+                        "'" + user + "','" + pass + "',N'" + hoten + "'," + tt + ")";
 
         try (Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
@@ -114,9 +114,9 @@ public class controller_QLNguoiDung {
         if (user.isEmpty()) return;
 
         String sql =
-            "UPDATE Admin SET password='" + pass + "', ho_ten=N'" + hoten +
-            "', trang_thai=" + tt +
-            " WHERE username='" + user + "'";
+                "UPDATE Admin SET password='" + pass + "', ho_ten=N'" + hoten +
+                        "', trang_thai=" + tt +
+                        " WHERE username='" + user + "'";
 
         try (Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
@@ -201,31 +201,41 @@ public class controller_QLNguoiDung {
              Connection con = ConnectDB.getConnection();
              Statement st = con.createStatement()) {
 
-            Sheet s = wb.getSheetAt(0);
-            for (int i = 1; i <= s.getLastRowNum(); i++) {
-                Row r = s.getRow(i);
+            Sheet sheet = wb.getSheetAt(0);
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row r = sheet.getRow(i);
                 if (r == null) continue;
 
-                String u = r.getCell(1).getStringCellValue();
-                String p = r.getCell(2).getStringCellValue();
-                String h = r.getCell(3).getStringCellValue();
-                int t = (int) r.getCell(4).getNumericCellValue();
+                String u = r.getCell(1) == null ? "" : r.getCell(1).toString().trim();
+                String p = r.getCell(2) == null ? "" : r.getCell(2).toString().trim();
+                String h = r.getCell(3) == null ? "" : r.getCell(3).toString().trim();
+
+                int t = 1; // mặc định hoạt động
+                if (r.getCell(4) != null) {
+                    t = (int) Double.parseDouble(r.getCell(4).toString());
+                }
+
+                if (u.isEmpty() || p.isEmpty()) continue;
 
                 String sql =
-                    "IF EXISTS (SELECT 1 FROM Admin WHERE username='" + u + "') " +
-                    "UPDATE Admin SET password='" + p + "', ho_ten=N'" + h +
-                    "', trang_thai=" + t +
-                    " WHERE username='" + u + "' " +
-                    "ELSE INSERT INTO Admin(username,password,ho_ten,trang_thai) " +
-                    "VALUES('" + u + "','" + p + "',N'" + h + "'," + t + ")";
+                        "IF EXISTS (SELECT 1 FROM Admin WHERE username='" + u + "') " +
+                                "UPDATE Admin SET password='" + p + "', ho_ten=N'" + h +
+                                "', trang_thai=" + t +
+                                " WHERE username='" + u + "' " +
+                                "ELSE INSERT INTO Admin(username,password,ho_ten,trang_thai) " +
+                                "VALUES('" + u + "','" + p + "',N'" + h + "'," + t + ")";
 
                 st.executeUpdate(sql);
             }
+
             JOptionPane.showMessageDialog(v, "Nhập Excel thành công!");
             loadTable("");
             v.clearForm();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(v, e.getMessage());
         }
     }
 }
+
