@@ -138,96 +138,96 @@ public class controller_ThongKe {
     }
 
     private void writeExcel(Path filePath) throws Exception {
-    try (Workbook wb = new XSSFWorkbook()) {
-        Sheet sheet = wb.createSheet("ThongKe_" + cacheHocKy);
+        try (Workbook wb = new XSSFWorkbook()) {
+            Sheet sheet = wb.createSheet("ThongKe_" + cacheHocKy);
 
-        // ===== Styles =====
-        CellStyle headerStyle = wb.createCellStyle();
-        Font headerFont = wb.createFont();
-        headerFont.setBold(true);
-        headerStyle.setFont(headerFont);
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);
-        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
-        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headerStyle.setBorderTop(BorderStyle.THIN);
-        headerStyle.setBorderBottom(BorderStyle.THIN);
-        headerStyle.setBorderLeft(BorderStyle.THIN);
-        headerStyle.setBorderRight(BorderStyle.THIN);
+            // ===== Styles =====
+            CellStyle headerStyle = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
 
-        CellStyle textStyle = wb.createCellStyle();
-        textStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        textStyle.setAlignment(HorizontalAlignment.LEFT);
-        textStyle.setBorderTop(BorderStyle.THIN);
-        textStyle.setBorderBottom(BorderStyle.THIN);
-        textStyle.setBorderLeft(BorderStyle.THIN);
-        textStyle.setBorderRight(BorderStyle.THIN);
+            CellStyle textStyle = wb.createCellStyle();
+            textStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            textStyle.setAlignment(HorizontalAlignment.LEFT);
+            textStyle.setBorderTop(BorderStyle.THIN);
+            textStyle.setBorderBottom(BorderStyle.THIN);
+            textStyle.setBorderLeft(BorderStyle.THIN);
+            textStyle.setBorderRight(BorderStyle.THIN);
 
-        CellStyle numberStyle = wb.createCellStyle();
-        numberStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        numberStyle.setAlignment(HorizontalAlignment.CENTER);
-        numberStyle.setBorderTop(BorderStyle.THIN);
-        numberStyle.setBorderBottom(BorderStyle.THIN);
-        numberStyle.setBorderLeft(BorderStyle.THIN);
-        numberStyle.setBorderRight(BorderStyle.THIN);
+            CellStyle numberStyle = wb.createCellStyle();
+            numberStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            numberStyle.setAlignment(HorizontalAlignment.CENTER);
+            numberStyle.setBorderTop(BorderStyle.THIN);
+            numberStyle.setBorderBottom(BorderStyle.THIN);
+            numberStyle.setBorderLeft(BorderStyle.THIN);
+            numberStyle.setBorderRight(BorderStyle.THIN);
 
-        int r = 0;
+            int r = 0;
 
-        // ===== Header row =====
-        Row header = sheet.createRow(r++);
-        header.setHeightInPoints(20);
+            // ===== Header row =====
+            Row header = sheet.createRow(r++);
+            header.setHeightInPoints(20);
 
-        String[] cols = {"Học kỳ", "Năm học", "Tổng lượt đăng ký", "Môn học", "Số SV"};
-        for (int c = 0; c < cols.length; c++) {
-            Cell cell = header.createCell(c);
-            cell.setCellValue(cols[c]);
-            cell.setCellStyle(headerStyle);
-        }
+            String[] cols = {"Học kỳ", "Năm học", "Tổng lượt đăng ký", "Môn học", "Số SV"};
+            for (int c = 0; c < cols.length; c++) {
+                Cell cell = header.createCell(c);
+                cell.setCellValue(cols[c]);
+                cell.setCellStyle(headerStyle);
+            }
 
-        // ===== Data rows =====
-        // Mỗi môn là 1 dòng, nhưng Học kỳ/Năm học/Tổng lượt giống nhau
-        if (cacheList == null || cacheList.isEmpty()) {
-            Row row = sheet.createRow(r++);
-            Cell c0 = row.createCell(0); c0.setCellValue(cacheHocKy); c0.setCellStyle(textStyle);
-            Cell c1 = row.createCell(1); c1.setCellValue(cacheNamHoc == null ? "" : cacheNamHoc); c1.setCellStyle(textStyle);
-            Cell c2 = row.createCell(2); c2.setCellValue(cacheTong); c2.setCellStyle(numberStyle);
-            Cell c3 = row.createCell(3); c3.setCellValue(""); c3.setCellStyle(textStyle);
-            Cell c4 = row.createCell(4); c4.setCellValue(0); c4.setCellStyle(numberStyle);
-        } else {
-            for (ThongKeMon tk : cacheList) {
+            // ===== Data rows =====
+            // Mỗi môn là 1 dòng, nhưng Học kỳ/Năm học/Tổng lượt giống nhau
+            if (cacheList == null || cacheList.isEmpty()) {
                 Row row = sheet.createRow(r++);
+                Cell c0 = row.createCell(0); c0.setCellValue(cacheHocKy); c0.setCellStyle(textStyle);
+                Cell c1 = row.createCell(1); c1.setCellValue(cacheNamHoc == null ? "" : cacheNamHoc); c1.setCellStyle(textStyle);
+                Cell c2 = row.createCell(2); c2.setCellValue(cacheTong); c2.setCellStyle(numberStyle);
+                Cell c3 = row.createCell(3); c3.setCellValue(""); c3.setCellStyle(textStyle);
+                Cell c4 = row.createCell(4); c4.setCellValue(0); c4.setCellStyle(numberStyle);
+            } else {
+                for (ThongKeMon tk : cacheList) {
+                    Row row = sheet.createRow(r++);
 
-                Cell c0 = row.createCell(0); // Học kỳ
-                c0.setCellValue(cacheHocKy);
-                c0.setCellStyle(textStyle);
+                    Cell c0 = row.createCell(0); // Học kỳ
+                    c0.setCellValue(cacheHocKy);
+                    c0.setCellStyle(textStyle);
 
-                Cell c1 = row.createCell(1); // Năm học
-                c1.setCellValue(cacheNamHoc == null ? "" : cacheNamHoc);
-                c1.setCellStyle(textStyle);
+                    Cell c1 = row.createCell(1); // Năm học
+                    c1.setCellValue(cacheNamHoc == null ? "" : cacheNamHoc);
+                    c1.setCellStyle(textStyle);
 
-                Cell c2 = row.createCell(2); // Tổng lượt đăng ký
-                c2.setCellValue(cacheTong);
-                c2.setCellStyle(numberStyle);
+                    Cell c2 = row.createCell(2); // Tổng lượt đăng ký
+                    c2.setCellValue(cacheTong);
+                    c2.setCellStyle(numberStyle);
 
-                Cell c3 = row.createCell(3); // Môn học
-                c3.setCellValue(tk.tenMon);
-                c3.setCellStyle(textStyle);
+                    Cell c3 = row.createCell(3); // Môn học
+                    c3.setCellValue(tk.tenMon);
+                    c3.setCellStyle(textStyle);
 
-                Cell c4 = row.createCell(4); // Số SV
-                c4.setCellValue(tk.soSv);
-                c4.setCellStyle(numberStyle);
+                    Cell c4 = row.createCell(4); // Số SV
+                    c4.setCellValue(tk.soSv);
+                    c4.setCellStyle(numberStyle);
+                }
+            }
+
+            // ===== Auto size columns =====
+            for (int c = 0; c < cols.length; c++) sheet.autoSizeColumn(c);
+
+            // Freeze header
+            sheet.createFreezePane(0, 1);
+
+            try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
+                wb.write(fos);
             }
         }
-
-        // ===== Auto size columns =====
-        for (int c = 0; c < cols.length; c++) sheet.autoSizeColumn(c);
-
-        // Freeze header
-        sheet.createFreezePane(0, 1);
-
-        try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-            wb.write(fos);
-        }
     }
-}
 }

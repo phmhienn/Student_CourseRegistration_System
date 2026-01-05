@@ -340,7 +340,7 @@ public class controller_QLdangky {
 
             String sql = """
                 INSERT INTO DangKyTinChi (ma_sv, ma_lhp, loai_dang_ky, trang_thai)
-                SELECT sv.ma_sv, ?, 'Học mới', 'Đã đăng ký'
+                SELECT sv.ma_sv, ?, N'Học mới', N'Đã đăng ký'
                 FROM SinhVien sv
                 WHERE sv.lop = ?
             """;

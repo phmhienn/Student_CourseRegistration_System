@@ -47,7 +47,6 @@ public class controller_QLLopHocPhan {
             while (rs.next()) {
                 view.cboGiangVien.addItem(rs.getString("ma_gv"));
             }
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Lỗi load giảng viên");
             e.printStackTrace();
@@ -69,7 +68,6 @@ public class controller_QLLopHocPhan {
                         rs.getString("ma_mon") + " - " + rs.getString("ten_mon")
                 );
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(view, "Lỗi load môn học");
         }
@@ -92,15 +90,11 @@ public class controller_QLLopHocPhan {
             while (rs.next()) {
                 view.cboHocKy.addItem(rs.getString("ma_hoc_ky"));
             }
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Lỗi load học kỳ");
             e.printStackTrace();
         }
     }
-
-
-
 
     private void loadTable() {
         model.setRowCount(0);
@@ -165,15 +159,11 @@ public class controller_QLLopHocPhan {
         view.btnXoa.addActionListener(e -> xoa());
         view.btnLamMoi.addActionListener(e -> lamMoi());
         view.btnTim.addActionListener(e -> tim());
-
         view.btnQuayLai.addActionListener(e -> view.dispose());
-
         view.btnNhapExcel.addActionListener(e ->nhapExcel());
-
         view.btnXuatExcel.addActionListener(e ->xuatExcel());
     }
-
-
+    
     private void them() {
         if (!validateForm()) return;
         if (isTrungLichPhong(
