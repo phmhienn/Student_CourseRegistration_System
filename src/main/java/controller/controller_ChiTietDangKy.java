@@ -16,8 +16,9 @@ public class controller_ChiTietDangKy {
         this.view = v;
 
         loadBang();
+        loadComboMaLHP();
 
-        
+        view.cbMaLHP.addActionListener(e -> loadTheoMaLHP());
         view.tblChiTietDangKy.getSelectionModel()
                 .addListSelectionListener(e -> dayLenForm());
 
@@ -76,24 +77,112 @@ public class controller_ChiTietDangKy {
             e.printStackTrace();
         }
     }
+    
+    private void loadComboMaLHP() {
+        view.cbMaLHP.removeAllItems();
+
+        String sql = "SELECT ma_lhp FROM LopHocPhan";
+
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                view.cbMaLHP.addItem(rs.getString("ma_lhp"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void loadTheoMaLHP() {
+        if (view.cbMaLHP.getSelectedItem() == null) return;
+
+        String maLHP = view.cbMaLHP.getSelectedItem().toString();
+
+        String sql = """
+            SELECT 
+                mh.ma_mon,
+                mh.ten_mon,
+                lhp.thu,
+                lhp.ca_hoc,
+                lhp.phong_hoc,
+                lhp.ma_hoc_ky
+            FROM LopHocPhan lhp
+            JOIN MonHoc mh ON lhp.ma_mon = mh.ma_mon
+            WHERE lhp.ma_lhp = ?
+        """;
+
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, maLHP);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                view.txtMaMon.setText(rs.getString("ma_mon"));
+                view.txtTenMon.setText(rs.getString("ten_mon"));
+                view.txtPhong.setText(rs.getString("phong_hoc"));
+                view.txtHocKy.setText(rs.getString("ma_hoc_ky"));
+
+                view.txtLichhoc.setText(
+                        rs.getString("thu") + " - " + rs.getString("ca_hoc")
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     
     private void dayLenForm() {
         int row = view.tblChiTietDangKy.getSelectedRow();
         if (row == -1) return;
 
-        view.txtMaLHP.setText(view.tblChiTietDangKy.getValueAt(row, 0).toString());
-        view.txtMaMon.setText(view.tblChiTietDangKy.getValueAt(row, 1).toString());
+        String maMon = view.tblChiTietDangKy.getValueAt(row, 1).toString();
+        String maLHP = view.tblChiTietDangKy.getValueAt(row, 0).toString();
+
+        // ĐẨY THÔNG TIN LÊN FORM
+        view.txtMaMon.setText(maMon);
         view.txtTenMon.setText(view.tblChiTietDangKy.getValueAt(row, 2).toString());
         view.txtLop.setText(view.tblChiTietDangKy.getValueAt(row, 4).toString());
         view.txtPhong.setText(view.tblChiTietDangKy.getValueAt(row, 7).toString());
         view.txtHocKy.setText(view.tblChiTietDangKy.getValueAt(row, 8).toString());
 
         String thu = view.tblChiTietDangKy.getValueAt(row, 5).toString();
-        String ca = view.tblChiTietDangKy.getValueAt(row, 6).toString();
+        String ca  = view.tblChiTietDangKy.getValueAt(row, 6).toString();
         view.txtLichhoc.setText(thu + " - " + ca);
+
+        loadComboMaLHPTheoMaMon(maMon);
+
+        view.cbMaLHP.setSelectedItem(maLHP);
     }
 
+        private void loadComboMaLHPTheoMaMon(String maMon) {
+        view.cbMaLHP.removeAllItems();
+
+        String sql = """
+            SELECT ma_lhp
+            FROM LopHocPhan
+            WHERE ma_mon = ?
+        """;
+
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, maMon);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                view.cbMaLHP.addItem(rs.getString("ma_lhp"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
    
     private void timKiem() {
         String key = view.txtTimKiem.getText().trim();
@@ -153,7 +242,7 @@ public class controller_ChiTietDangKy {
 
    
     private void lamMoi() {
-        view.txtMaLHP.setText("");
+        view.cbMaLHP.setSelectedIndex(-1);
         view.txtMaMon.setText("");
         view.txtTenMon.setText("");
         view.txtLop.setText("");
@@ -173,13 +262,26 @@ public class controller_ChiTietDangKy {
             return;
         }
 
-        String maLHP = view.tblChiTietDangKy.getValueAt(row, 0).toString();
-        String phong = view.tblChiTietDangKy.getValueAt(row, 7).toString();
-        String thu = view.tblChiTietDangKy.getValueAt(row, 5).toString();
-        String ca = view.tblChiTietDangKy.getValueAt(row, 6).toString();
-        String maHK = view.tblChiTietDangKy.getValueAt(row, 8).toString();
+        String maLHP_Moi = view.cbMaLHP.getSelectedItem().toString();
+        String lop = view.txtLop.getText();
+        String phong = view.txtPhong.getText();
+        String maHK = view.txtHocKy.getText();
 
-        if (biTrungPhongCa(phong, thu, ca, maHK, maLHP)) {
+        String lich = view.txtLichhoc.getText(); 
+        String thu = lich.split(" - ")[0];
+        String ca  = lich.split(" - ")[1];
+
+        if (daCoLopDangKy(maLHP_Moi, lop)) {
+            JOptionPane.showMessageDialog(
+                view,
+                "❌ Lớp học phần này đã được đăng ký cho lớp khác",
+                "Lỗi nghiệp vụ",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        
+        if (biTrungPhongCa(phong, thu, ca, maHK, maLHP_Moi)) {
             JOptionPane.showMessageDialog(
                     view,
                     "❌ Trùng phòng – trùng ca học",
@@ -189,10 +291,32 @@ public class controller_ChiTietDangKy {
             return;
         }
 
-        JOptionPane.showMessageDialog(
-                view,
-                "✅ Sửa thành công"
-        );
+        String sql = """
+            UPDATE DangKyTinChi dk
+            JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
+            SET dk.ma_lhp = ?
+            WHERE sv.lop = ?
+        """;
+
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, maLHP_Moi);
+            ps.setString(2, lop);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(view, "✅ Đã đổi lớp học phần cho cả lớp");
+            
+            loadBang();
+            if (view.tblChiTietDangKy.getRowCount() > 0) {
+            view.tblChiTietDangKy.setRowSelectionInterval(0, 0);
+        }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(view, "❌ Lỗi khi sửa đăng ký");
+        }
     }
 
     
@@ -228,8 +352,32 @@ public class controller_ChiTietDangKy {
             e.printStackTrace();
         }
     }
-
     
+    private boolean daCoLopDangKy(String maLHP, String lopHienTai) {
+        String sql = """
+            SELECT COUNT(*)
+            FROM DangKyTinChi dk
+            JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
+            WHERE dk.ma_lhp = ?
+              AND sv.lop <> ?
+        """;
+
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, maLHP);
+            ps.setString(2, lopHienTai);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private boolean biTrungPhongCa(
             String phong, String thu, String ca, String maHK, String maLHP) {
 

@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 public class view_ChiTietDangKy extends JFrame {
 
    
-    public JTextField txtMaLHP = new JTextField();
+    public JComboBox<String> cbMaLHP = new JComboBox<>();
     public JTextField txtMaMon = new JTextField();
     public JTextField txtTenMon = new JTextField();
     public JTextField txtHocKy = new JTextField();
@@ -57,7 +57,7 @@ public class view_ChiTietDangKy extends JFrame {
         JPanel pnlInput = new JPanel(new GridLayout(3, 4, 20, 12));
         pnlInput.setBackground(new Color(245, 245, 245));
 
-        pnlInput.add(field("Mã LHP", txtMaLHP));
+        pnlInput.add(fieldCombo("Mã LHP", cbMaLHP));
         pnlInput.add(field("Mã môn", txtMaMon));
         pnlInput.add(field("Tên môn", txtTenMon));
         pnlInput.add(field("Lớp", txtLop));
@@ -67,7 +67,7 @@ public class view_ChiTietDangKy extends JFrame {
         pnlInput.add(field("Lịch học", txtLichhoc));
         pnlInput.add(new JLabel());
 
-        setReadonly(txtMaLHP);
+        
         setReadonly(txtMaMon);
         setReadonly(txtTenMon);
         setReadonly(txtHocKy);
@@ -114,7 +114,19 @@ public class view_ChiTietDangKy extends JFrame {
 
         add(pnlMain, BorderLayout.CENTER);
     }
+    
+    private JPanel fieldCombo(String label, JComboBox<?> cb) {
+        JLabel lb = new JLabel(label);
+        lb.setPreferredSize(new Dimension(70, 25));
 
+        cb.setPreferredSize(new Dimension(200, 28));
+
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        p.setBackground(new Color(245, 245, 245));
+        p.add(lb);
+        p.add(cb);
+        return p;
+    }
    
     private JPanel field(String label, JTextField txt) {
         JLabel lb = new JLabel(label);

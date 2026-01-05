@@ -300,38 +300,49 @@ public class controller_QLdangky {
 
     private void dangKy() {
         if (view.cbLop.getSelectedItem() == null ||
-            view.cbLichHoc.getSelectedItem() == null ||
-            view.cbPhongHoc.getSelectedItem() == null) {
+        view.cbHocKy.getSelectedItem() == null ||
+        view.cbPhongHoc.getSelectedItem() == null ||
+        view.cbLichHoc.getSelectedItem() == null) {
 
-            JOptionPane.showMessageDialog(view, "Chọn đủ thông tin");
-            return;
-        }
-        
+        JOptionPane.showMessageDialog(view, "Chọn đủ thông tin");
+        return;
+    }
+
         String lop  = view.cbLop.getSelectedItem().toString();
         String maHK = view.cbHocKy.getSelectedItem().toString();
         String maMon = view.txtMaMon.getText().trim();
-        
+
+       
         if (daDangKyMon(lop, maMon, maHK)) {
-        JOptionPane.showMessageDialog(
-            view,
-            "❌ Lớp " + lop + " đã đăng ký môn " + maMon + " trong học kỳ này",
-            "Trùng môn học",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
+            JOptionPane.showMessageDialog(
+                view,
+                "❌ Đã có lớp đăng ký môn trong học kỳ này",
+                "Trùng môn học",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
 
         try {
             String maLHP = getMaLHP();
 
+            
+            if (daCoLopDangKy(maLHP, lop)) {
+                JOptionPane.showMessageDialog(
+                    view,
+                    "❌ Lớp học phần " + maLHP + " đã được đăng ký cho lớp khác",
+                    "Trùng lớp học phần",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            
             String sql = """
                 INSERT INTO DangKyTinChi (ma_sv, ma_lhp, loai_dang_ky, trang_thai)
                 SELECT sv.ma_sv, ?, 'Học mới', 'Đã đăng ký'
                 FROM SinhVien sv
                 WHERE sv.lop = ?
-                AND sv.ma_sv NOT IN (
-                    SELECT ma_sv FROM DangKyTinChi WHERE ma_lhp = ?
-                )
             """;
 
             try (Connection con = ConnectDB.getConnection();
@@ -339,15 +350,40 @@ public class controller_QLdangky {
 
                 ps.setString(1, maLHP);
                 ps.setString(2, lop);
-                ps.setString(3, maLHP);
 
                 ps.executeUpdate();
-                JOptionPane.showMessageDialog(view, "Đăng ký thành công");
+                JOptionPane.showMessageDialog(view, "✅ Đăng ký thành công");
                 loadBang();
             }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, e.getMessage());
         }
+    }
+    
+    private boolean daCoLopDangKy(String maLHP, String lop) {
+        String sql = """
+            SELECT COUNT(*)
+            FROM DangKyTinChi dk
+            JOIN SinhVien sv ON dk.ma_sv = sv.ma_sv
+            WHERE dk.ma_lhp = ?
+            AND sv.lop <> ?
+        """;
+
+        try (Connection con = ConnectDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, maLHP);
+            ps.setString(2, lop);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void timKiem() {
