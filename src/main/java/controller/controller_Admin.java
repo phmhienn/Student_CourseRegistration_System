@@ -16,10 +16,12 @@ import model.ConnectDB;
 import model.model_Admin;
 import view.view_Admin;
 import view.view_Dangnhap;
+import view.view_QLLopHocPhan;
 import view.view_QLNguoiDung;
 import view.view_QLSinhVien;
 import view.view_QLdangky;
 import view.view_Quanlymonhoc;
+
 
 /**
  *
@@ -37,6 +39,7 @@ public class controller_Admin {
         v.btnQuanLyMonHoc.addActionListener(e -> moQuanlymonhoc());
         v.btnDangXuat.addActionListener(e -> dangXuat());
         v.btnQuanLyNguoiDung.addActionListener(e-> moQLNguoiDung());
+        v.btnQLLopHocPhan.addActionListener(e ->moQLLopHocPhan());
         v.btnQuanLyDangKyTinChi.addActionListener(e -> moQLdangky());
         
     }
@@ -64,6 +67,13 @@ public class controller_Admin {
         new controller_QLdangky(man);
         man.setVisible(true);
     }
+    
+    private void moQLLopHocPhan(){
+        view_QLLopHocPhan man =new view_QLLopHocPhan();
+        new controller_QLLopHocPhan(man,v);
+        man.setVisible(true);
+    }
+    
 
     private void dangXuat() {
         v.dispose();

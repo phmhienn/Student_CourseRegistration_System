@@ -4,34 +4,31 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class view_QLdangky extends JFrame {
+public class view_ChiTietDangKy extends JFrame {
 
    
     public JTextField txtMaLHP = new JTextField();
     public JTextField txtMaMon = new JTextField();
     public JTextField txtTenMon = new JTextField();
-    public JTextField txtSoTinChi = new JTextField();
-
-    public JComboBox<String> cbLop = new JComboBox<>();
-    public JComboBox<String> cbPhongHoc = new JComboBox<>();
-    public JComboBox<String> cbLichHoc = new JComboBox<>();
-    public JComboBox<String> cbHocKy = new JComboBox<>();
-
+    public JTextField txtHocKy = new JTextField();
+    public JTextField txtLop = new JTextField();
+    public JTextField txtPhong = new JTextField();
+    public JTextField txtLichhoc = new JTextField();
     public JTextField txtTimKiem = new JTextField();
-
     
-    public JButton btnDangKy = new JButton("Đăng ký");
+    public JButton btnSua = new JButton("Sửa");
+    public JButton btnHuy = new JButton("Hủy");
+    public JButton btnLamMoi = new JButton("Làm mới");
     public JButton btnTimKiem = new JButton("Tìm kiếm");
-    public JButton btnchitietdangky = new JButton("Chi tiết đăng ký");
-    public JButton btnQuaylai = new JButton("Quay lại");
+    public JButton btnDong = new JButton("Quay lại");
 
-    public JTable tblDangKy = new JTable();
+    public JTable tblChiTietDangKy = new JTable();
 
-    public view_QLdangky() {
-        setTitle("Quản lý đăng ký tín chỉ");
-        setSize(1100, 620);
+    public view_ChiTietDangKy() {
+        setTitle("Chi tiết đăng ký lớp học phần");
+        setSize(1100, 600);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         
@@ -39,72 +36,77 @@ public class view_QLdangky extends JFrame {
         pnlHeader.setPreferredSize(new Dimension(1100, 55));
         pnlHeader.setBackground(Color.WHITE);
 
-        JLabel lblTitle = new JLabel("Quản lý đăng ký tín chỉ", SwingConstants.CENTER);
+        JLabel lblTitle = new JLabel("Chi tiết đăng ký lớp học phần", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
-        JPanel pnlRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 12));
+        JPanel pnlRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 12));
         pnlRight.setOpaque(false);
-        styleGray(btnQuaylai);
-        pnlRight.add(btnQuaylai);
+        btnDong.setBackground(new Color(230, 230, 230));
+        pnlRight.add(btnDong);
 
         pnlHeader.add(lblTitle, BorderLayout.CENTER);
         pnlHeader.add(pnlRight, BorderLayout.EAST);
+
         add(pnlHeader, BorderLayout.NORTH);
 
-       
+        
         JPanel pnlForm = new JPanel(new BorderLayout());
-        pnlForm.setBorder(BorderFactory.createTitledBorder("Thông tin đăng ký"));
+        pnlForm.setBorder(BorderFactory.createTitledBorder("Thông tin lớp học phần"));
         pnlForm.setBackground(new Color(245, 245, 245));
 
-        JPanel pnlInput = new JPanel(new GridLayout(2, 4, 20, 12));
+        JPanel pnlInput = new JPanel(new GridLayout(3, 4, 20, 12));
         pnlInput.setBackground(new Color(245, 245, 245));
 
         pnlInput.add(field("Mã LHP", txtMaLHP));
         pnlInput.add(field("Mã môn", txtMaMon));
         pnlInput.add(field("Tên môn", txtTenMon));
-        pnlInput.add(field("Lớp", cbLop));
-
-        pnlInput.add(field("Số tín chỉ", txtSoTinChi));
-        pnlInput.add(field("Phòng", cbPhongHoc));
-        pnlInput.add(field("Lịch học", cbLichHoc));
-        pnlInput.add(field("Học kỳ", cbHocKy));
+        pnlInput.add(field("Lớp", txtLop));
+        
+        pnlInput.add(field("Học kỳ", txtHocKy));
+        pnlInput.add(field("Phòng", txtPhong));
+        pnlInput.add(field("Lịch học", txtLichhoc));
+        pnlInput.add(new JLabel());
 
         setReadonly(txtMaLHP);
+        setReadonly(txtMaMon);
         setReadonly(txtTenMon);
-        setReadonly(txtSoTinChi);
+        setReadonly(txtHocKy);
+        setReadonly(txtLop);
+        setReadonly(txtPhong);
+        setReadonly(txtLichhoc);
 
         pnlForm.add(pnlInput, BorderLayout.CENTER);
 
-        
-        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 10));
+       
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         pnlButton.setBackground(new Color(245, 245, 245));
-
-        styleBlue(btnDangKy);
-        styleGray(btnchitietdangky);
-        styleRed(btnTimKiem);
-
         txtTimKiem.setPreferredSize(new Dimension(220, 32));
         txtTimKiem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-        pnlButton.add(btnDangKy);
-        pnlButton.add(btnchitietdangky);
-        pnlButton.add(Box.createHorizontalStrut(30));
+        styleBlue(btnSua);
+        styleRed(btnHuy);
+        styleGray(btnLamMoi);
+        styleBlue(btnTimKiem);
+
+        pnlButton.add(btnSua);
+        pnlButton.add(btnHuy);
+        pnlButton.add(btnLamMoi);
         pnlButton.add(new JLabel("Từ khóa"));
         pnlButton.add(txtTimKiem);
         pnlButton.add(btnTimKiem);
 
         pnlForm.add(pnlButton, BorderLayout.SOUTH);
 
-        
-        tblDangKy.setRowHeight(28);
-        tblDangKy.setModel(new DefaultTableModel(
+     
+        tblChiTietDangKy.setRowHeight(28);
+        tblChiTietDangKy.setModel(new DefaultTableModel(
             new Object[]{
                 "Mã LHP", "Mã môn", "Tên môn", "Số tín chỉ",
-                "Thứ", "Ca", "Phòng", "Học kỳ"
+                "Lớp", "Thứ", "Ca", "Phòng", "Học kỳ"
             }, 0
         ));
 
-        JScrollPane scroll = new JScrollPane(tblDangKy);
+        JScrollPane scroll = new JScrollPane(tblChiTietDangKy);
 
         JPanel pnlMain = new JPanel(new BorderLayout());
         pnlMain.add(pnlForm, BorderLayout.NORTH);
@@ -113,36 +115,34 @@ public class view_QLdangky extends JFrame {
         add(pnlMain, BorderLayout.CENTER);
     }
 
-    
-    private JPanel field(String label, JComponent field) {
+   
+    private JPanel field(String label, JTextField txt) {
         JLabel lb = new JLabel(label);
-        lb.setPreferredSize(new Dimension(80, 22));
+        lb.setPreferredSize(new Dimension(70, 25));
 
-        field.setPreferredSize(new Dimension(200, 32));
+        txt.setPreferredSize(new Dimension(200, 28));
 
-        JPanel p = new JPanel(new BorderLayout(5, 4));
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         p.setBackground(new Color(245, 245, 245));
-
-        p.add(lb, BorderLayout.NORTH);
-        p.add(field, BorderLayout.CENTER);
-
+        p.add(lb);
+        p.add(txt);
         return p;
     }
 
-    
+  
     private void setReadonly(JTextField txt) {
         txt.setEditable(false);
         txt.setBackground(Color.WHITE);
         txt.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
-
+    
     private void styleBlue(JButton b) {
         b.setBackground(new Color(45, 107, 203));
         b.setForeground(Color.WHITE);
         b.setOpaque(true);
         b.setBorderPainted(false);
         b.setFocusPainted(false);
-        b.setPreferredSize(new Dimension(110, 32));
+        b.setPreferredSize(new Dimension(100, 32));
     }
 
     private void styleRed(JButton b) {
@@ -151,8 +151,9 @@ public class view_QLdangky extends JFrame {
         b.setOpaque(true);
         b.setBorderPainted(false);
         b.setFocusPainted(false);
-        b.setPreferredSize(new Dimension(110, 32));
+        b.setPreferredSize(new Dimension(100, 32));
     }
+    
 
     private void styleGray(JButton b) {
         b.setBackground(new Color(220, 220, 220));
@@ -160,6 +161,6 @@ public class view_QLdangky extends JFrame {
         b.setOpaque(true);
         b.setBorderPainted(false);
         b.setFocusPainted(false);
-        b.setPreferredSize(new Dimension(140, 32));
+        b.setPreferredSize(new Dimension(100, 32));
     }
 }
