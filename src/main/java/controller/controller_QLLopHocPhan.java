@@ -402,18 +402,16 @@ public class controller_QLLopHocPhan {
             for (int i = 0; i < model.getRowCount(); i++) {
                 Row row = sheet.createRow(i + 1);
 
-                row.createCell(0).setCellValue(model.getValueAt(i, 0).toString()); // ma_lhp
-                row.createCell(1).setCellValue(model.getValueAt(i, 1).toString()); // ma_mon
-                row.createCell(2).setCellValue(model.getValueAt(i, 2).toString()); // ten_mon
-                row.createCell(3).setCellValue(model.getValueAt(i, 3).toString()); // ma_hoc_ky
-                row.createCell(4).setCellValue(model.getValueAt(i, 4).toString()); // giang_vien
-                row.createCell(5).setCellValue(
-                        Integer.parseInt(model.getValueAt(i, 5).toString())
-                ); // so_luong
-                row.createCell(6).setCellValue(model.getValueAt(i, 6).toString()); // thu
-                row.createCell(7).setCellValue(model.getValueAt(i, 7).toString()); // ca
-                row.createCell(8).setCellValue(model.getValueAt(i, 8).toString()); // phong
-                row.createCell(9).setCellValue(model.getValueAt(i, 9).toString()); // trang_thai
+                row.createCell(0).setCellValue(model.getValueAt(i, 0).toString());
+                row.createCell(1).setCellValue(model.getValueAt(i, 1).toString()); 
+                row.createCell(2).setCellValue(model.getValueAt(i, 2).toString()); 
+                row.createCell(3).setCellValue(model.getValueAt(i, 3).toString());
+                row.createCell(4).setCellValue(model.getValueAt(i, 4).toString());
+                row.createCell(5).setCellValue(Integer.parseInt(model.getValueAt(i, 5).toString()));
+                row.createCell(6).setCellValue(model.getValueAt(i, 6).toString());
+                row.createCell(7).setCellValue(model.getValueAt(i, 7).toString()); 
+                row.createCell(8).setCellValue(model.getValueAt(i, 8).toString());
+                row.createCell(9).setCellValue(model.getValueAt(i, 9).toString()); 
             }
 
 

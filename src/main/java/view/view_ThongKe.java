@@ -20,18 +20,15 @@ import javax.swing.table.JTableHeader;
 
 public class view_ThongKe extends JFrame {
 
-    // ===== INPUT =====
     public JComboBox<String> cboHocKy = new JComboBox<>();
     public JTextField txtNamHoc = new JTextField();
     public JTextField txtTongLuot = new JTextField();
 
-    // ===== BUTTONS =====
     public JButton btnThongKe = new JButton("Thống kê");
     public JButton btnLamMoi = new JButton("Làm mới");
     public JButton btnXuatExcel = new JButton("Xuất Excel");
     public JButton btnQuayLai = new JButton("Quay lại");
 
-    // ===== TABLE =====
     public DefaultTableModel model = new DefaultTableModel(
             new Object[]{"Môn học", "Số SV"}, 0
     ) {
@@ -53,7 +50,6 @@ public class view_ThongKe extends JFrame {
         Font fLabel = new Font("Segoe UI", Font.BOLD, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
 
-        // readonly
         txtNamHoc.setEditable(false);
         txtTongLuot.setEditable(false);
 
@@ -62,7 +58,6 @@ public class view_ThongKe extends JFrame {
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
-        // ===== TOP BAR =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
@@ -78,7 +73,6 @@ public class view_ThongKe extends JFrame {
         topBar.add(lblTitle, BorderLayout.CENTER);
         topBar.add(topRight, BorderLayout.EAST);
 
-        // ===== INPUT WRAP =====
         JPanel inputWrap = new JPanel(new BorderLayout(12, 12));
         inputWrap.setBackground(Color.WHITE);
         inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin thống kê"));
@@ -91,7 +85,6 @@ public class view_ThongKe extends JFrame {
         form.add(fieldBox("Năm học", txtNamHoc, fLabel, fInput));
         form.add(fieldBox("Tổng lượt đăng ký", txtTongLuot, fLabel, fInput));
 
-        // ===== ACTION BAR =====
         JPanel actionBar = new JPanel(new BorderLayout());
         actionBar.setOpaque(false);
         actionBar.setBorder(new EmptyBorder(0, 14, 12, 14));
@@ -116,7 +109,6 @@ public class view_ThongKe extends JFrame {
         inputWrap.add(form, BorderLayout.CENTER);
         inputWrap.add(actionBar, BorderLayout.SOUTH);
 
-        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
         tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách thống kê"));
@@ -157,13 +149,12 @@ public class view_ThongKe extends JFrame {
         root.add(centerWrap, BorderLayout.CENTER);
     }
 
-    // ===== helper UI blocks =====
     private JPanel fieldBox(String label, JTextField field, Font fLabel, Font fInput) {
         JPanel p = new JPanel();
         p.setOpaque(false);
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-        JLabel l = new JLabel(label, SwingConstants.CENTER); // căn giữa label
+        JLabel l = new JLabel(label, SwingConstants.CENTER);
         l.setFont(fLabel);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -186,7 +177,7 @@ public class view_ThongKe extends JFrame {
         p.setOpaque(false);
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-        JLabel l = new JLabel(label, SwingConstants.CENTER); // căn giữa label
+        JLabel l = new JLabel(label, SwingConstants.CENTER);
         l.setFont(fLabel);
         l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -200,7 +191,6 @@ public class view_ThongKe extends JFrame {
         return p;
     }
 
-    // ===== Button styles =====
     private void stylePrimary(JButton b) {
         styleButton(b, new Color(45, 108, 223), Color.WHITE, new Color(30, 90, 200));
     }
@@ -225,7 +215,6 @@ public class view_ThongKe extends JFrame {
         });
     }
 
-    // tiện cho controller
     public void clearTable() { model.setRowCount(0); }
     public void addRow(String mon, int soSv) { model.addRow(new Object[]{mon, soSv}); }
 }

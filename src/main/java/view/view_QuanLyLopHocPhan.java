@@ -59,9 +59,6 @@ public class view_QuanLyLopHocPhan extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (Exception ignored) {}
-
         Font fTitle = new Font("Segoe UI", Font.BOLD, 18);
         Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);

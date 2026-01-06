@@ -216,7 +216,6 @@ public class controller_QLdangky {
         String phong  = view.tblDangKy.getValueAt(row, 6).toString();
         String hocKy  = view.tblDangKy.getValueAt(row, 7).toString();
 
-        // ĐÚNG NGHIỆP VỤ
         view.txtMaLHP.setText(maLHP);
         view.txtMaMon.setText(maMon);
         view.txtTenMon.setText(tenMon);

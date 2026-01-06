@@ -12,14 +12,12 @@ import javax.swing.table.JTableHeader;
 
 public class view_QLNguoiDung extends JFrame {
 
-    // ===== INPUT =====
     public JTextField txtUsername = new JTextField();
     public JTextField txtPassword = new JTextField();
     public JTextField txtHoTen = new JTextField();
     public JComboBox<String> cbTrangThai = new JComboBox<>(new String[]{"Hoạt động", "Khoá"});
     public JTextField txtTimKiem = new JTextField();
 
-    // ===== BUTTONS =====
     public JButton btnThem = new JButton("Thêm");
     public JButton btnSua = new JButton("Sửa");
     public JButton btnXoa = new JButton("Xoá");
@@ -27,13 +25,11 @@ public class view_QLNguoiDung extends JFrame {
 
     public JButton btnTimKiem = new JButton("Tìm kiếm");
 
-    // ✅ THÊM 2 NÚT EXCEL
     public JButton btnXuatExcel = new JButton("Xuất Excel");
     public JButton btnNhapExcel = new JButton("Nhập Excel");
 
     public JButton btnQuayLai = new JButton("Quay lại");
 
-    // ===== TABLE =====
     public DefaultTableModel model = new DefaultTableModel(
         new Object[]{"ID", "Username", "Password", "Họ tên", "Trạng thái"}, 0
     ) {
@@ -49,9 +45,6 @@ public class view_QLNguoiDung extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (Exception ignored) {}
-
         Font fTitle = new Font("Segoe UI", Font.BOLD, 18);
         Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
@@ -61,7 +54,6 @@ public class view_QLNguoiDung extends JFrame {
         root.setBackground(new Color(245, 246, 248));
         setContentPane(root);
 
-        // ===== TOP BAR =====
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Color.WHITE);
         topBar.setBorder(new EmptyBorder(10, 12, 10, 12));
@@ -77,7 +69,6 @@ public class view_QLNguoiDung extends JFrame {
         topBar.add(lblTitle, BorderLayout.CENTER);
         topBar.add(topRight, BorderLayout.EAST);
 
-        // ===== INPUT WRAP =====
         JPanel inputWrap = new JPanel(new BorderLayout(12, 12));
         inputWrap.setBackground(Color.WHITE);
         inputWrap.setBorder(BorderFactory.createTitledBorder("Thông tin tài khoản"));
@@ -91,7 +82,6 @@ public class view_QLNguoiDung extends JFrame {
         form.add(fieldBox("Họ tên", txtHoTen, fLabel, fInput));
         form.add(comboBox("Trạng thái", cbTrangThai, fLabel, fInput));
 
-        // ===== ACTION BAR =====
         JPanel actionBar = new JPanel(new BorderLayout());
         actionBar.setOpaque(false);
         actionBar.setBorder(new EmptyBorder(0, 14, 12, 14));
@@ -105,7 +95,6 @@ public class view_QLNguoiDung extends JFrame {
         styleNeutral(btnLamMoi);
         stylePrimary(btnTimKiem);
 
-        // Excel style
         stylePrimary(btnXuatExcel);
         styleNeutral(btnNhapExcel);
 
@@ -139,7 +128,6 @@ public class view_QLNguoiDung extends JFrame {
         inputWrap.add(form, BorderLayout.CENTER);
         inputWrap.add(actionBar, BorderLayout.SOUTH);
 
-        // ===== TABLE WRAP =====
         JPanel tableWrap = new JPanel(new BorderLayout());
         tableWrap.setBackground(Color.WHITE);
         tableWrap.setBorder(BorderFactory.createTitledBorder("Danh sách người dùng"));
@@ -192,7 +180,6 @@ public class view_QLNguoiDung extends JFrame {
         txtUsername.setEnabled(true);
     }
 
-    // ===== helper UI blocks =====
     private JPanel fieldBox(String label, JTextField field, Font fLabel, Font fInput) {
         JPanel p = new JPanel();
         p.setOpaque(false);

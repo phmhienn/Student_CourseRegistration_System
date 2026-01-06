@@ -41,9 +41,6 @@ public class view_Quanlymonhoc extends JFrame {
         setMinimumSize(new Dimension(980, 560));
         setLocationRelativeTo(null);
 
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (Exception ignored) {}
-
         Font fTitle = new Font("Segoe UI", Font.BOLD, 18);
         Font fLabel = new Font("Segoe UI", Font.PLAIN, 13);
         Font fInput = new Font("Segoe UI", Font.PLAIN, 13);
